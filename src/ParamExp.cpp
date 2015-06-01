@@ -9,6 +9,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <map>
 #include "ParamExp.hpp"
 
 using namespace std;
@@ -107,6 +108,23 @@ bool ParamExp::isConverge(const ParamExp & par)
 		}
 	}
 	return converge;
+}
+
+void ParamExp::sortByLambda()
+{
+	map<double, double> temp;
+	int i;
+	for (i = 0; i < K; ++i)
+	{
+		temp[lambda[i]] = prop[i];
+	}
+	i = 0;
+	for (map<double, double>::iterator it = temp.begin(); it != temp.end(); it++)
+	{
+		lambda[i] = it->first;
+		prop[i] = it->second;
+		i++;
+	}
 }
 
 void ParamExp::print()

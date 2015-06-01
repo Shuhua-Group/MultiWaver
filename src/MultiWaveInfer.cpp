@@ -27,7 +27,10 @@ vector<vector<T> > perm(vector<T> &seq)
 	sort(seq.begin(), seq.end());
 	do
 	{
-		result.push_back(seq);
+		if (seq.at(0) != seq.at(1))
+		{
+			result.push_back(seq);
+		}
 	} while (next_permutation(seq.begin(), seq.end()));
 	return result;
 }
@@ -63,6 +66,7 @@ ParamExp findOptPar(const std::vector<double> &observ, int maxIter)
 		}
 	}
 	//parPrev.print();
+	parPrev.sortByLambda();
 	return parPrev;
 }
 
@@ -162,172 +166,172 @@ int main(int argc, char **argv)
 		props[label] = sumLens.at(label) / tLen;
 		optPars[label] = findOptPar(segs.at(label), maxIter);
 	}
-//	for (int i = 0; i < numLabel; ++i)
-//	{
-//		string label = labels.at(i);
-//		cout << "Population: " << label << "; Mix proportion: " << props.at(label) << endl;
-//		cout << "Optimal Parameters: ";
-//		optPars.at(label).print();
-//	}
+	for (int i = 0; i < numLabel; ++i)
+	{
+		string label = labels.at(i);
+		cout << "Population: " << label << "; Mix proportion: " << props.at(label) << endl;
+		cout << "Optimal Parameters: ";
+		optPars.at(label).print();
+	}
 
 	//gw begin
 	//gw
 	// get m
-	map<int, vector<double> > optLabelM;
-	for (int i = 0; i < numLabel; ++i)
-	{
-		string label = labels.at(i);
-		double SurProp = props[label]; // total contribute for a pop
-		ParamExp tmpKpara = optPars[label];
-		int k = tmpKpara.getK();
-		vector<double> m; //mk_j
-		double r[k];
-		double rSum = 0;
-		for (int j = 0; j < k; ++j)
-		{
-			r[j] = tmpKpara.getProp(j) / tmpKpara.getLambda(j);  // the ratio of mk_j
-			rSum += r[j] / r[0];
-		}
-
-		double temp = SurProp / rSum;
-
-		for (int j = 0; j < k; ++j)
-		{
-			m.push_back(temp * r[j] / r[0]);
-		}
-
-		optLabelM[i] = m;
-	}
-
-	//get an order
-	vector<int> EasyOrder; // start from pop 0
-	for (int i = 0; i < numLabel; ++i)
-	{
-		string label = labels.at(i);
-		ParamExp tmpKpara = optPars[label];
-		int k = tmpKpara.getK();
-		for (int j = 0; j < k; ++j)
-		{
-			EasyOrder.push_back(i);
-		}
-	}
-
-	//calculate the sum of admiture events
-	int kSum = 0;
-	for (int i = 0; i < numLabel; ++i)
-	{
-		string label = labels.at(i);
-		ParamExp tmpKpara = optPars[label];
-		int k = tmpKpara.getK();
-		kSum += k;
-	}
-
-	//get all order
-	vector<vector<int> > AllOrder = perm(EasyOrder);
-	int order[kSum];
-	// get m in order
-	double MinOrder[kSum]; // m in order
-	for (int i = 0; i < kSum; ++i)
-	{
-		for (int j = 0; j < numLabel; ++j)
-		{
-			vector<double> m_j = optLabelM[j];
-			vector<double>::iterator iter = m_j.begin();
-			if (order[i] == j + 1)
-			{
-				MinOrder[i] = *iter;
-				++iter;
-			}
-		}
-
-	}
-
-	//gw
-	//get a
-	double a[kSum];
-	a[kSum - 1] = MinOrder[kSum - 1];
-	for (int i = 0; i < kSum; ++i)
-	{
-		int MutiA;
-		MutiA *= (1 - a[kSum - i - 1]);
-		a[kSum - i - 2] = MinOrder[kSum - i - 2] / MutiA;
-	}
-
-	//gw
-	//get H
-	double H[numLabel][kSum];
-	for (int k = 0; k < numLabel; ++k)
-	{
-		for (int h = 0; h < kSum; ++h)
-		{
-			//get w
-			int p = h;
-			int w = 0;
-			if (order[p] != k)
-			{
-				p--;
-			}
-			for (int c = 0; c < p; ++p)
-			{
-				if (order[c] == k)
-					w++;
-			}
-
-			for (int j = 0; j < w; ++j)
-			{
-				//get Ikj
-				int J = 0;
-				int I_j = 0;
-				for (int c = 0; c < w; ++c)
-				{
-					if (order[c] == k)
-					{
-						J++;
-						if (J - 1 == j)
-							I_j = c;
-					}
-				}
-
-				//get multiply
-				double multip = 0;
-				for (int t = I_j; t < h; ++t)
-				{
-					multip *= (1 - a[t]);
-				}
-				H[k][h] += a[I_j] * multip;
-			}
-
-		}
-	}
-
-	//gw
-	//get T
-	double Tdelta[kSum];
-	double laststep;
-	double TotT = 0;
-	for (int i = kSum; i > 0; --i)
-	{
-		for (int k = 0; k < numLabel; ++k)
-		{
-
-			if (order[i] == k)
-			{
-				string label = labels.at(k);
-				ParamExp tmpKpara = optPars[label];
-				int num = 0;
-				for (int j = 0; j < i; ++j)
-				{
-					if (order[j] == k)
-						num++;
-				}
-				double uk_j = tmpKpara.getLambda(num);
-
-				Tdelta[i] = (uk_j - laststep) / (1 - H[k][i]);
-				laststep = (1 - H[k][i]) * Tdelta[i];
-			}
-		}
-		TotT += Tdelta[i];
-	}
+//	map<int, vector<double> > optLabelM;
+//	for (int i = 0; i < numLabel; ++i)
+//	{
+//		string label = labels.at(i);
+//		double SurProp = props[label]; // total contribute for a pop
+//		ParamExp tmpKpara = optPars[label];
+//		int k = tmpKpara.getK();
+//		vector<double> m; //mk_j
+//		double r[k];
+//		double rSum = 0;
+//		for (int j = 0; j < k; ++j)
+//		{
+//			r[j] = tmpKpara.getProp(j) / tmpKpara.getLambda(j); // the ratio of mk_j
+//			rSum += r[j] / r[0];
+//		}
+//
+//		double temp = SurProp / rSum;
+//
+//		for (int j = 0; j < k; ++j)
+//		{
+//			m.push_back(temp * r[j] / r[0]);
+//		}
+//
+//		optLabelM[i] = m;
+//	}
+//
+//	//get an order
+//	vector<int> EasyOrder; // start from pop 0
+//	for (int i = 0; i < numLabel; ++i)
+//	{
+//		string label = labels.at(i);
+//		ParamExp tmpKpara = optPars[label];
+//		int k = tmpKpara.getK();
+//		for (int j = 0; j < k; ++j)
+//		{
+//			EasyOrder.push_back(i);
+//		}
+//	}
+//
+//	//calculate the sum of admiture events
+//	int kSum = 0;
+//	for (int i = 0; i < numLabel; ++i)
+//	{
+//		string label = labels.at(i);
+//		ParamExp tmpKpara = optPars[label];
+//		int k = tmpKpara.getK();
+//		kSum += k;
+//	}
+//
+//	//get all order
+//	vector<vector<int> > AllOrder = perm(EasyOrder);
+//	int order[kSum];
+//	// get m in order
+//	double MinOrder[kSum]; // m in order
+//	for (int i = 0; i < kSum; ++i)
+//	{
+//		for (int j = 0; j < numLabel; ++j)
+//		{
+//			vector<double> m_j = optLabelM[j];
+//			vector<double>::iterator iter = m_j.begin();
+//			if (order[i] == j + 1)
+//			{
+//				MinOrder[i] = *iter;
+//				++iter;
+//			}
+//		}
+//
+//	}
+//
+//	//gw
+//	//get a
+//	double a[kSum];
+//	a[kSum - 1] = MinOrder[kSum - 1];
+//	for (int i = 0; i < kSum; ++i)
+//	{
+//		int MutiA;
+//		MutiA *= (1 - a[kSum - i - 1]);
+//		a[kSum - i - 2] = MinOrder[kSum - i - 2] / MutiA;
+//	}
+//
+//	//gw
+//	//get H
+//	double H[numLabel][kSum];
+//	for (int k = 0; k < numLabel; ++k)
+//	{
+//		for (int h = 0; h < kSum; ++h)
+//		{
+//			//get w
+//			int p = h;
+//			int w = 0;
+//			if (order[p] != k)
+//			{
+//				p--;
+//			}
+//			for (int c = 0; c < p; ++p)
+//			{
+//				if (order[c] == k)
+//					w++;
+//			}
+//
+//			for (int j = 0; j < w; ++j)
+//			{
+//				//get Ikj
+//				int J = 0;
+//				int I_j = 0;
+//				for (int c = 0; c < w; ++c)
+//				{
+//					if (order[c] == k)
+//					{
+//						J++;
+//						if (J - 1 == j)
+//							I_j = c;
+//					}
+//				}
+//
+//				//get multiply
+//				double multip = 0;
+//				for (int t = I_j; t < h; ++t)
+//				{
+//					multip *= (1 - a[t]);
+//				}
+//				H[k][h] += a[I_j] * multip;
+//			}
+//
+//		}
+//	}
+//
+//	//gw
+//	//get T
+//	double Tdelta[kSum];
+//	double laststep;
+//	double TotT = 0;
+//	for (int i = kSum; i > 0; --i)
+//	{
+//		for (int k = 0; k < numLabel; ++k)
+//		{
+//
+//			if (order[i] == k)
+//			{
+//				string label = labels.at(k);
+//				ParamExp tmpKpara = optPars[label];
+//				int num = 0;
+//				for (int j = 0; j < i; ++j)
+//				{
+//					if (order[j] == k)
+//						num++;
+//				}
+//				double uk_j = tmpKpara.getLambda(num);
+//
+//				Tdelta[i] = (uk_j - laststep) / (1 - H[k][i]);
+//				laststep = (1 - H[k][i]) * Tdelta[i];
+//			}
+//		}
+//		TotT += Tdelta[i];
+//	}
 
 	return 0;
 }

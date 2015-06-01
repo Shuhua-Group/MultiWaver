@@ -72,6 +72,7 @@ public:
 	/*
 	 * @brief print the value of parameters
 	 */
+	void sortByLambda();
 	void print();
 	virtual ~ParamExp();
 private:
