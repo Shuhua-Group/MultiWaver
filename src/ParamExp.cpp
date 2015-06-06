@@ -2,47 +2,54 @@
  * ParamExp.cpp
  *
  *  Created on: May 26, 2015
- *      Author: young
+ *  Author: young
  */
-
-#include <ctime>
 #include <cmath>
 #include <cstdlib>
-#include <iostream>
 #include <map>
+#include <iostream>
+
 #include "ParamExp.hpp"
 
 using namespace std;
 
-//constructor
+/* constructor
+ * Initial with K exponential distributions
+ * parameters lambda are randomly initial with value between 0 and 1
+ * proportions are randomly initial with value between 0 and 1, and
+ * the summation equals 1
+ */
 ParamExp::ParamExp(int K) :
 		K(K)
 {
 	lambda = new double[K];
-	for (int j = 0; j < K; ++j)
+	for (int i = 0; i < K; ++i)
 	{
-		lambda[j] = 1.0 * rand() / RAND_MAX;
+		lambda[i] = 1.0 * rand() / RAND_MAX;
 	}
 	prop = new double[K];
 	double tmp = 0;
-	for (int j = 0; j < (K - 1); ++j)
+	for (int i = 0; i < (K - 1); ++i)
 	{
-		prop[j] = rand() / (1.0 * K * RAND_MAX);
-		tmp += prop[j];
+		prop[i] = rand() / (1.0 * K * RAND_MAX);
+		tmp += prop[i];
 	}
+	//ensure sum to one
 	prop[K - 1] = 1 - tmp;
 }
 
-//another constructor
+/* another constructor
+ * initialize with K, lambdas and proportions
+ */
 ParamExp::ParamExp(int K, double *l, double *p) :
 		K(K)
 {
 	lambda = new double[K];
 	prop = new double[K];
-	for (int j = 0; j < K; ++j)
+	for (int i = 0; i < K; ++i)
 	{
-		lambda[j] = l[j];
-		prop[j] = p[j];
+		lambda[i] = l[i];
+		prop[i] = p[i];
 	}
 }
 
@@ -52,10 +59,10 @@ ParamExp::ParamExp(const ParamExp &rhs)
 	K = rhs.K;
 	lambda = new double[K];
 	prop = new double[K];
-	for (int j = 0; j < K; ++j)
+	for (int i = 0; i < K; ++i)
 	{
-		lambda[j] = rhs.lambda[j];
-		prop[j] = rhs.prop[j];
+		lambda[i] = rhs.lambda[i];
+		prop[i] = rhs.prop[i];
 	}
 }
 
@@ -71,10 +78,10 @@ ParamExp & ParamExp::operator=(const ParamExp &rhs)
 			delete[] prop;
 		lambda = new double[K];
 		prop = new double[K];
-		for (int j = 0; j < K; ++j)
+		for (int i = 0; i < K; ++i)
 		{
-			lambda[j] = rhs.lambda[j];
-			prop[j] = rhs.prop[j];
+			lambda[i] = rhs.lambda[i];
+			prop[i] = rhs.prop[i];
 		}
 	}
 	return *this;
@@ -112,6 +119,10 @@ bool ParamExp::isConverge(const ParamExp & par)
 
 void ParamExp::sortByLambda()
 {
+	/*
+	 * the key of map are automatically sorted, therefore can be used
+	 * to sort lambda and corresponding proportion accordingly
+	 */
 	map<double, double> temp;
 	int i;
 	for (i = 0; i < K; ++i)
@@ -130,9 +141,9 @@ void ParamExp::sortByLambda()
 void ParamExp::print()
 {
 	cout << "par=(";
-	for (int j = 0; j < K; ++j)
+	for (int i = 0; i < K; ++i)
 	{
-		cout << lambda[j] << ", " << prop[j] << "; ";
+		cout << lambda[i] << ", " << prop[i] << "; ";
 	}
 	cout << ")" << endl;
 }

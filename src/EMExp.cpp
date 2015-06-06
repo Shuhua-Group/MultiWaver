@@ -7,12 +7,21 @@
 
 #include <cmath>
 #include "EMExp.hpp"
-#include "Utils.hpp"
+
+double sum(double * data, int size)
+{
+	double tmp = 0;
+	for (int i = 0; i < size; ++i)
+	{
+		tmp += data[i];
+	}
+	return tmp;
+}
 
 using namespace std;
 
 //constructor
-EMExp::EMExp(const ParamExp &par, const std::vector<double> &observ) :
+EMExp::EMExp(const ParamExp &par, const vector<double> &observ) :
 		par(par), observ(observ)
 {
 	updateLik();
@@ -33,6 +42,9 @@ void EMExp::setPar(const ParamExp &par)
 	this->par = par;
 }
 //update likelihood
+/*
+ * Log-lik = sum(log(sum(m_j*l_j*exp(-l_j*x_i))))
+ */
 void EMExp::updateLik()
 {
 	double tmp = 0;
@@ -54,21 +66,21 @@ void EMExp::updateLik()
 //EM iteration, converge or reach max iteration time will terminate
 void EMExp::iterate(int maxIter)
 {
-	int it = 0;
+	int it = 1; //iteration number
 	int kval = par.getK();
 	int size = observ.size();
-	double *nlambda;
-	double *nprop;
+	double *nlambda; //new lambda
+	double *nprop; //new proportion
 	double **pval;
 	double **pxval;
 	nlambda = new double[kval];
 	nprop = new double[kval];
 	pval = new double *[kval];
 	pxval = new double *[kval];
-	for (int j = 0; j < kval; ++j)
+	for (int i = 0; i < kval; ++i)
 	{
-		pval[j] = new double[size];
-		pxval[j] = new double[size];
+		pval[i] = new double[size];
+		pxval[i] = new double[size];
 	}
 	while (it < maxIter)
 	{
@@ -90,13 +102,16 @@ void EMExp::iterate(int maxIter)
 			}
 		}
 		//M-step
-		for (int j = 0; j < kval; ++j)
+		for (int i = 0; i < kval; ++i)
 		{
-			double sump = sum(pval[j], size);
-			nprop[j] = sump / size;
-			nlambda[j] = sump / sum(pxval[j], size);
+			double sump = sum(pval[i], size);
+			nprop[i] = sump / size;
+			nlambda[i] = sump / sum(pxval[i], size);
 		}
 		ParamExp updatedPar(kval, nlambda, nprop);
+		/*
+		 * check converge or not, if converge, jump out of loop
+		 */
 		if (par.isConverge(updatedPar))
 		{
 			par = updatedPar;
@@ -115,10 +130,10 @@ void EMExp::iterate(int maxIter)
 	//clean stuff
 	delete[] nlambda;
 	delete[] nprop;
-	for (int j = 0; j < kval; ++j)
+	for (int i = 0; i < kval; ++i)
 	{
-		delete[] pval[j];
-		delete[] pxval[j];
+		delete[] pval[i];
+		delete[] pxval[i];
 	}
 	delete[] pval;
 	delete[] pxval;

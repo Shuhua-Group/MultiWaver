@@ -70,14 +70,29 @@ public:
 	 */
 	bool isConverge(const ParamExp &par);
 	/*
-	 * @brief print the value of parameters
+	 * @brief sort the parameter by lambda in ascend order
 	 */
 	void sortByLambda();
+	/*
+	 * @brief print the value of parameters
+	 */
 	void print();
+	/*
+	 * @brief destructor
+	 */
 	virtual ~ParamExp();
 private:
+	/*
+	 * number of exponential distributions
+	 */
 	int K;
+	/*
+	 * parameter lambdas for exponential distributions
+	 */
 	double *lambda;
+	/*
+	 * mix proportions for exponential distributions
+	 */
 	double *prop;
 };
 
