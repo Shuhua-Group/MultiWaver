@@ -156,12 +156,12 @@ int main(int argc, char **argv)
 			sumLengths[label] = 0.0;
 			labels.push_back(label);
 		}
-		sumLengths.at(label) += len;
+		sumLengths[label] += len;
 		totalLength += len;
 		//greater than or equal to cutoff
 		if (len > lower)
 		{
-			segs.at(label).push_back(len);
+			segs[label].push_back(len);
 		}
 	}
 	fin.close();
@@ -174,8 +174,8 @@ int main(int argc, char **argv)
 	{
 		string label = labels.at(i);
 		cout << "Perform EM scan for waves of population " << label << "..." << endl;
-		mixtureProps[label] = sumLengths.at(label) / totalLength;
-		optPars[label] = findOptPar(segs.at(label), maxIter);
+		mixtureProps[label] = sumLengths[label] / totalLength;
+		optPars[label] = findOptPar(segs[label], maxIter);
 	}
 	cout << "Finished scanning for admixture waves." << endl << endl;
 //	for (int i = 0; i < numLabel; ++i)
@@ -204,7 +204,7 @@ int main(int argc, char **argv)
 			temp[j] = optPars[label].getProp(j) / optPars[label].getLambda(j);
 			tempSum += temp[j] / temp[0];
 		}
-		tempSum = mixtureProps.at(label) / tempSum;
+		tempSum = mixtureProps[label] / tempSum;
 		for (int j = 0; j < numOfExp; ++j)
 		{
 			tempMIK.push_back(tempSum * temp[j] / temp[0]);
