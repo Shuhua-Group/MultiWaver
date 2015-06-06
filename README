@@ -42,33 +42,38 @@ Perform EM scan for waves of population 1...
 Finished scanning for admixture waves.
 
 There is(are) 2 waves of admixture event(s) detected
------------------------------------------------------------------------
-Results summary: 
+-----------------------------------------------------------------------------
+                             Results summary
+
+             Parental population            Admixture proportion
+                               1                        0.506226
+                               2                        0.493774
+
 
 Possible scenario: #1
-   24.4715: (1,   0.198394) -----------|----------- (0,   0.198394)
+   24.4077: (1,   0.198398) -----------|----------- (0,   0.801602) :   24.4713
                                        |
                                        |
                                        |
-   11.0706: (1,   0.384019) -----------|
+   11.0706: (1,   0.384016) -----------|
                                        |
                                        |
                                        |
 
 
 Possible scenario: #2
-   24.2673: (0,   0.801606) -----------|----------- (1,   0.801606)
+   24.3492: (0,   0.801602) -----------|----------- (1,   0.198398) :   24.2672
                                        |
                                        |
                                        |
-   11.0706: (1,   0.384019) -----------|
+   11.0706: (1,   0.384016) -----------|
                                        |
                                        |
                                        |
 
-Hint: 0: population-2; 1: population-1; 
------------------------------------------------------------------------
-
+Hint: 
+0: population-2; 1: population-1; 
+-----------------------------------------------------------------------------
 
 We use a tree to present the results. The simulated admixed population has 
 two ancestral populations (population 1 and 2). There are 2 waves of admixture 
