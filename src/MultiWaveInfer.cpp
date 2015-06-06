@@ -156,12 +156,12 @@ int main(int argc, char **argv)
 			sumLengths[label] = 0.0;
 			labels.push_back(label);
 		}
-		sumLengths[label] += len;
+		sumLengths.at(label) += len;
 		totalLength += len;
 		//greater than or equal to cutoff
 		if (len > lower)
 		{
-			segs[label].push_back(len);
+			segs.at(label).push_back(len);
 		}
 	}
 	fin.close();
@@ -174,8 +174,8 @@ int main(int argc, char **argv)
 	{
 		string label = labels.at(i);
 		cout << "Perform EM scan for waves of population " << label << "..." << endl;
-		mixtureProps[label] = sumLengths[label] / totalLength;
-		optPars[label] = findOptPar(segs[label], maxIter);
+		mixtureProps[label] = sumLengths.at(label) / totalLength;
+		optPars[label] = findOptPar(segs.at(label), maxIter);
 	}
 	cout << "Finished scanning for admixture waves." << endl << endl;
 //	for (int i = 0; i < numLabel; ++i)
@@ -193,7 +193,7 @@ int main(int argc, char **argv)
 	for (int i = 0; i < numLabel; ++i)
 	{
 		string label = labels.at(i);
-		int numOfExp = optPars[label].getK();
+		int numOfExp = optPars.at(label).getK();
 		totalNumOfWaves += numOfExp;
 		vector<double> tempMIK;
 		double tempSum = 0;
@@ -201,10 +201,10 @@ int main(int argc, char **argv)
 		for (int j = 0; j < numOfExp; ++j)
 		{
 			popOrder.push_back(i);
-			temp[j] = optPars[label].getProp(j) / optPars[label].getLambda(j);
+			temp[j] = optPars.at(label).getProp(j) / optPars.at(label).getLambda(j);
 			tempSum += temp[j] / temp[0];
 		}
-		tempSum = mixtureProps[label] / tempSum;
+		tempSum = mixtureProps.at(label) / tempSum;
 		for (int j = 0; j < numOfExp; ++j)
 		{
 			tempMIK.push_back(tempSum * temp[j] / temp[0]);
@@ -343,7 +343,7 @@ int main(int argc, char **argv)
 					{
 						tempSum += (1 - hInOrder[j][k]) * admixTime[k];
 					}
-					double rate = optPars[labels.at(j)].getLambda(indexes[j]) - tempSum;
+					double rate = optPars.at(labels.at(j)).getLambda(indexes[j]) - tempSum;
 					admixTime[i] = rate / (1 - hInOrder[j][i]);
 					indexes[j]++;
 					break;
