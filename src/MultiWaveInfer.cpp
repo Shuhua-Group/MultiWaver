@@ -15,6 +15,7 @@
 #include <algorithm>
 #include "EMExp.hpp"
 #include "MultiWaveInfer.hpp"
+#include <boost/math/distributions/chi_squared.hpp>
 
 using namespace std;
 
@@ -32,7 +33,13 @@ vector<vector<T> > perm(vector<T> &seq)
 	return result;
 }
 
-ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp)
+double cv_chisq(int df, double alpha)
+{
+	boost::math::chi_squared dist(df);
+	return boost::math::quantile(dist, 1 - alpha);
+}
+
+ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp, double criticalValue)
 {
 	bool findOpt = false;
 	int k = 1;
@@ -51,7 +58,7 @@ ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ances
 		//cout << "K=" << k << "; Likelihood=" << setprecision(8) << em.getLik() << "; ";
 		//em.getPar().print();
 		double llkCur = em.getLik();
-		if (2 * (llkCur - llkPrev) < kCriticalValue)
+		if (2 * (llkCur - llkPrev) < criticalValue)
 		{
 			//cout << "Optimal K " << k - 1 << endl;
 			findOpt = true;
@@ -84,6 +91,7 @@ void help()
 	cout << "\t-i/--input\t<string>\tInput of the ancestral tracks [required]" << endl;
 	cout << "\t-l/--lower\t[double]\tLower bound to discard short tracks [optional, default 0]" << endl;
 	cout << "\t-m/--maxIt\t[integer]\tMax number of iterations to perform EM [optional, default 10000]" << endl;
+	cout << "\t-a/--alpha\t[double]\tSignificance level to reject null hypothesis in LRT [optional, default 0.05]" << endl;
 	cout << "Option" << endl;
 	cout << "\t-h/--help\tPrint help message." << endl;
 }
@@ -97,6 +105,7 @@ int main(int argc, char **argv)
 	}
 	string filename = "";
 	double lower = 0;
+	double alpha = 0.05;
 	int maxIter = 10000;
 	for (int i = 1; i < argc; ++i)
 	{
@@ -118,10 +127,14 @@ int main(int argc, char **argv)
 		{
 			maxIter = atoi(argv[++i]);
 		}
+		else if (arg == "-a" || arg == "--alpha")
+		{
+			alpha = atof(argv[++i]);
+		}
 	}
 	if (filename.size() == 0)
 	{
-		cerr << "File name required, please check help" << endl;
+		cerr << "Input file name required, please check help" << endl;
 		exit(1);
 	}
 	//echo command entered
@@ -178,12 +191,13 @@ int main(int argc, char **argv)
 	int numLabel = static_cast<int>(labels.size());
 	map<string, double> mixtureProps; //S_k
 	map<string, ParamExp> optPars;
+	double criticalValue = cv_chisq(2, alpha);
 	for (int i = 0; i < numLabel; ++i)
 	{
 		string label = labels.at(i);
 		cout << "Perform EM scan for waves of population " << label << "..." << endl;
 		mixtureProps[label] = sumLengths.at(label) / totalLength;
-		optPars[label] = findOptPar(segs.at(label), maxIter, mixtureProps.at(label));
+		optPars[label] = findOptPar(segs.at(label), maxIter, mixtureProps.at(label), criticalValue);
 	}
 	cout << "Finished scanning for admixture waves." << endl << endl;
 //	for (int i = 0; i < numLabel; ++i)
