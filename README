@@ -1,6 +1,6 @@
 MultiWaveInfer v1.0.1
 =================================================
-Short Description:
+Short description:
 MultiWaveInfer is designed to estimate the parameters of multi-waves,
 multi-ancestral populations admixture models by the ancestral tracks. 
 The program proceed in two steps: Firstly, use EM-algorithm to identify 
@@ -128,7 +128,7 @@ inference, very short tracks are generally not reliable.
 GNU GENERAL PUBLIC LICENSE Version 3 
 http://www.gnu.org/licenses/gpl-3.0.html
 =================================================
-7. Questions and Suggestions
-Questions and Suggestions are welcomed, feel free to contact 
+7. Questions and suggestions
+Questions and suggestions are welcomed, feel free to contact 
 Shawn xyang619@gmail.com
 

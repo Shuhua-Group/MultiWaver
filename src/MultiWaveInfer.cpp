@@ -32,16 +32,16 @@ vector<vector<T> > perm(vector<T> &seq)
 	return result;
 }
 
-ParamExp findOptPar(const std::vector<double> &observ, int maxIter)
+ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp)
 {
-	bool findBest = false;
+	bool findOpt = false;
 	int k = 1;
 	ParamExp parPrev(k);
 	EMExp em(parPrev, observ);
 	em.iterate(maxIter);
 	double llkPrev = em.getLik();
 	parPrev = em.getPar();
-	while (!findBest)
+	while (!findOpt)
 	{
 		k++;
 		ParamExp parCur(k);
@@ -54,12 +54,20 @@ ParamExp findOptPar(const std::vector<double> &observ, int maxIter)
 		if (2 * (llkCur - llkPrev) < kCriticalValue)
 		{
 			//cout << "Optimal K " << k - 1 << endl;
-			findBest = true;
+			findOpt = true;
 		}
 		else
 		{
 			llkPrev = llkCur;
 			parPrev = em.getPar();
+		}
+		for (int i = 0; i < parPrev.getK(); ++i)
+		{
+			if (parPrev.getProp(i) * ancestryProp < kMinP)
+			{
+				findOpt = true;
+				break;
+			}
 		}
 	}
 	//parPrev.print();
