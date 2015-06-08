@@ -68,7 +68,7 @@ public:
 	 * @param maxIter max number of iteration, the EM iteration terminate either
 	 * parameter is converged, or reach the max number of iteration
 	 */
-	void iterate(int maxIter);
+	void iterate(int maxIter, double epsilon);
 	/*
 	 * destructor
 	 */

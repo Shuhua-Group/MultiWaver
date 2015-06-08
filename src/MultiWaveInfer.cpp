@@ -39,13 +39,13 @@ double cv_chisq(int df, double alpha)
 	return boost::math::quantile(dist, 1 - alpha);
 }
 
-ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp, double criticalValue)
+ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp, double criticalValue, double epsilon)
 {
 	bool findOpt = false;
 	int k = 1;
 	ParamExp parPrev(k);
 	EMExp em(parPrev, observ);
-	em.iterate(maxIter);
+	em.iterate(maxIter, epsilon);
 	double llkPrev = em.getLik();
 	parPrev = em.getPar();
 	while (!findOpt)
@@ -54,7 +54,7 @@ ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ances
 		ParamExp parCur(k);
 		em.setPar(parCur);
 		//em.updateLik();
-		em.iterate(maxIter);
+		em.iterate(maxIter, epsilon);
 		//cout << "K=" << k << "; Likelihood=" << setprecision(8) << em.getLik() << "; ";
 		//em.getPar().print();
 		double llkCur = em.getLik();
@@ -92,6 +92,7 @@ void help()
 	cout << "\t-l/--lower\t[double]\tLower bound to discard short tracks [optional, default 0]" << endl;
 	cout << "\t-m/--maxIt\t[integer]\tMax number of iterations to perform EM [optional, default 10000]" << endl;
 	cout << "\t-a/--alpha\t[double]\tSignificance level to reject null hypothesis in LRT [optional, default 0.05]" << endl;
+	cout << "\t-e/--epsilon\t[double]\tEpsilon to check whether a parameter converge or not [optional, default 0.000001] " << endl;
 	cout << "Option" << endl;
 	cout << "\t-h/--help\tPrint help message." << endl;
 }
@@ -106,6 +107,7 @@ int main(int argc, char **argv)
 	string filename = "";
 	double lower = 0;
 	double alpha = 0.05;
+	double epsilon = 0.000001;
 	int maxIter = 10000;
 	for (int i = 1; i < argc; ++i)
 	{
@@ -130,6 +132,10 @@ int main(int argc, char **argv)
 		else if (arg == "-a" || arg == "--alpha")
 		{
 			alpha = atof(argv[++i]);
+		}
+		else if (arg == "-e" || arg == "--epsilon")
+		{
+			epsilon = atof(argv[++i]);
 		}
 	}
 	if (filename.size() == 0)
@@ -197,7 +203,7 @@ int main(int argc, char **argv)
 		string label = labels.at(i);
 		cout << "Perform EM scan for waves of population " << label << "..." << endl;
 		mixtureProps[label] = sumLengths.at(label) / totalLength;
-		optPars[label] = findOptPar(segs.at(label), maxIter, mixtureProps.at(label), criticalValue);
+		optPars[label] = findOptPar(segs.at(label), maxIter, mixtureProps.at(label), criticalValue, epsilon);
 	}
 	cout << "Finished scanning for admixture waves." << endl << endl;
 //	for (int i = 0; i < numLabel; ++i)

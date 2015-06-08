@@ -32,7 +32,7 @@ double cv_chisq(int df, double alpha = 0.05);
  * perform EM to find the best number of exponential distribution and estimate
  * corresponding parameters
  */
-ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp, double criticalValue = 5.991);
+ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp, double criticalValue = 5.991, double epsilon = 0.000001);
 
 /*
  * print help information

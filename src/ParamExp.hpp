@@ -16,7 +16,7 @@
 #ifndef PARAMEXP_HPP_
 #define PARAMEXP_HPP_
 
-const double kDelta = 0.000001; //converge condition
+//const double kDelta = 0.000001; //converge condition
 
 class ParamExp
 {
@@ -66,9 +66,10 @@ public:
 	/*
 	 * @brief check if the parameter is converged
 	 * @param par old parameter
+	 * @param epsilon epsilon to check whether a parameter converge or not
 	 * @return true if is converged
 	 */
-	bool isConverge(const ParamExp &par);
+	bool isConverge(const ParamExp &par, double epsilon = 0.000001);
 	/*
 	 * @brief sort the parameter by lambda in ascend order
 	 */

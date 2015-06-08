@@ -103,12 +103,12 @@ double ParamExp::getProp(int index) const
 }
 
 //test convergence
-bool ParamExp::isConverge(const ParamExp & par)
+bool ParamExp::isConverge(const ParamExp & par, double epsilon)
 {
 	bool converge = 1;
 	for (int i = 0; i < K; ++i)
 	{
-		if (abs(lambda[i] - par.getLambda(i)) > kDelta || abs(prop[i] - par.getProp(i)) > kDelta)
+		if (abs(lambda[i] - par.getLambda(i)) > epsilon || abs(prop[i] - par.getProp(i)) > epsilon)
 		{
 			converge = 0;
 			break;

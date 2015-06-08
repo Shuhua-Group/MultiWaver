@@ -64,7 +64,7 @@ void EMExp::updateLik()
 }
 
 //EM iteration, converge or reach max iteration time will terminate
-void EMExp::iterate(int maxIter)
+void EMExp::iterate(int maxIter, double epsilon)
 {
 	int it = 1; //iteration number
 	int kval = par.getK();
@@ -112,7 +112,7 @@ void EMExp::iterate(int maxIter)
 		/*
 		 * check converge or not, if converge, jump out of loop
 		 */
-		if (par.isConverge(updatedPar))
+		if (par.isConverge(updatedPar, epsilon))
 		{
 			par = updatedPar;
 			updateLik();
