@@ -240,7 +240,7 @@ int main(int argc, char **argv)
 		survivalProps[i] = tempMIK;
 	}
 
-	cout << "There is(are) " << totalNumOfWaves - 1 << " waves of admixture event(s) detected" << endl;
+	cout << "There is(are) " << totalNumOfWaves - 1 << " wave(s) of admixture event(s) detected" << endl;
 	cout << "-----------------------------------------------------------------------------" << endl;
 	cout << setw(44) << "Results summary" << endl << endl;
 	cout << setw(32) << "Parental population" << setw(32) << "Admixture proportion" << endl;
@@ -249,17 +249,12 @@ int main(int argc, char **argv)
 		cout << setw(32) << iter->first << setw(32) << iter->second << endl;
 	}
 	cout << endl;
-	//print(popOrder);
+
 	int scenarioCount = 0;
 	vector<vector<int> > allOrder = perm(popOrder);
 	for (vector<vector<int> >::iterator iter = allOrder.begin(); iter != allOrder.end(); ++iter)
 	{
-//		cout << "Population order: ";
-//		for (size_t i = 0; i < iter->size(); ++i)
-//		{
-//			cout << iter->at(i) << " ";
-//		}
-//		cout << endl;
+
 		/*for a given order, calculate alpha, H and time T */
 		double mInOrder[totalNumOfWaves];
 		for (int i = 0; i < numLabel; ++i)
@@ -274,12 +269,7 @@ int main(int argc, char **argv)
 				}
 			}
 		}
-//		cout << "m in order: ";
-//		for (int i = 0; i < totalNumOfWaves; ++i)
-//		{
-//			cout << mInOrder[i] << " ";
-//		}
-//		cout << endl;
+
 		/* calculate alpha */
 		double alphaInOrder[totalNumOfWaves];
 		double multiplier = 1.0;
@@ -290,12 +280,6 @@ int main(int argc, char **argv)
 			alphaInOrder[i] = mInOrder[i] / multiplier;
 		}
 		alphaInOrder[totalNumOfWaves - 1] = 1.0 - alphaInOrder[totalNumOfWaves - 2];
-//		cout << "Ancestry proportion: ";
-//		for (int i = 0; i < totalNumOfWaves; ++i)
-//		{
-//			cout << alphaInOrder[i] << " ";
-//		}
-//		cout << endl;
 
 		/* calculate total ancestry proportion of kth ancestral population at t generation H_k(t)*/
 		double hInOrder[numLabel][totalNumOfWaves - 1];
@@ -343,16 +327,7 @@ int main(int argc, char **argv)
 				}
 			}
 		}
-//
-//		for (int i = 0; i < numLabel; i++)
-//		{
-//			cout << "H value for pop " << i << ":";
-//			for (int j = 0; j < totalNumOfWaves - 1; j++)
-//			{
-//				cout << hInOrder[i][j] << " ";
-//			}
-//			cout << endl;
-//		}
+
 		double admixTime[totalNumOfWaves];
 		int indexes[numLabel];
 		for (int i = 0; i < numLabel; ++i)
@@ -378,6 +353,7 @@ int main(int argc, char **argv)
 				}
 			}
 		}
+
 		//check whether the results is reasonable or not
 		bool isReasonable = true;
 		for (int i = 0; i < totalNumOfWaves - 1; ++i)
@@ -400,20 +376,24 @@ int main(int argc, char **argv)
 		{
 			cout << endl;
 			cout << "Possible scenario: #" << ++scenarioCount << endl;
-			cout << setw(10) << admixTime[totalNumOfWaves - 1];
-			cout << ": (" << setw(1) << iter->at(totalNumOfWaves - 1);
-			cout << ", " << setw(10) << alphaInOrder[totalNumOfWaves - 1];
-			cout << ") -----------|----------- (" << setw(1);
-			cout << iter->at(totalNumOfWaves - 2) << ", ";
-			cout << setw(10) << alphaInOrder[totalNumOfWaves - 2] << ") :";
-			cout << setw(10) << admixTime[totalNumOfWaves - 2] << endl;
+			cout << setw(10) << admixTime[totalNumOfWaves - 1]; //time
+			cout << ": (" << setw(1) << iter->at(totalNumOfWaves - 1); //population
+			cout << ", " << setw(10) << alphaInOrder[totalNumOfWaves - 1]; //proportion
+			//cout << ") -----------|----------- (";
+			cout << ") =========>||<========= (";
+			cout << setw(1) << iter->at(totalNumOfWaves - 2) << ", "; //population
+			cout << setw(10) << alphaInOrder[totalNumOfWaves - 2] << ") :"; //proportion
+			cout << setw(10) << admixTime[totalNumOfWaves - 2] << endl; //time
 			for (int i = totalNumOfWaves - 3; i >= 0; --i)
 			{
-				cout << setw(40) << "|" << endl << setw(40) << "|" << endl << setw(40) << "|" << endl;
+				//cout << setw(40) << "|" << endl << setw(40) << "|" << endl << setw(40) << "|" << endl;
+				cout << setw(40) << "||" << endl << setw(40) << "||" << endl << setw(40) << "||" << endl;
 				cout << setw(10) << admixTime[i] << ": (" << setw(1) << iter->at(i);
-				cout << ", " << setw(10) << alphaInOrder[i] << ") -----------|" << endl;
+				//cout << ", " << setw(10) << alphaInOrder[i] << ") -----------|" << endl;
+				cout << ", " << setw(10) << alphaInOrder[i] << ") =========>||" << endl;
 			}
-			cout << setw(40) << "|" << endl << setw(40) << "|" << endl << setw(40) << "|" << endl << endl;
+			//cout << setw(40) << "|" << endl << setw(40) << "|" << endl << setw(40) << "|" << endl << endl;
+			cout << setw(40) << "||" << endl << setw(40) << "||" << endl << setw(40) << "||" << endl << endl;
 		}
 	}
 	cout << "Hint: " << endl;
