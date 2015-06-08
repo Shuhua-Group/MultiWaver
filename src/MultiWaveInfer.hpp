@@ -27,7 +27,7 @@ std::vector<std::vector<T> > perm(std::vector<T> &seq);
  * perform EM to find the best number of exponential distribution and estimate
  * corresponding parameters
  */
-ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp = 0);
+ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp);
 
 /*
  * print help information

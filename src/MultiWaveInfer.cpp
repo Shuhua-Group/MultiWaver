@@ -183,7 +183,7 @@ int main(int argc, char **argv)
 		string label = labels.at(i);
 		cout << "Perform EM scan for waves of population " << label << "..." << endl;
 		mixtureProps[label] = sumLengths.at(label) / totalLength;
-		optPars[label] = findOptPar(segs.at(label), maxIter);
+		optPars[label] = findOptPar(segs.at(label), maxIter, mixtureProps.at(label));
 	}
 	cout << "Finished scanning for admixture waves." << endl << endl;
 //	for (int i = 0; i < numLabel; ++i)
