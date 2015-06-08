@@ -66,7 +66,7 @@ void EMExp::updateLik()
 //EM iteration, converge or reach max iteration time will terminate
 void EMExp::iterate(int maxIter, double epsilon)
 {
-	int it = 1; //iteration number
+	int it = 0; //iteration number
 	int kval = par.getK();
 	int size = observ.size();
 	double *nlambda; //new lambda
@@ -82,7 +82,7 @@ void EMExp::iterate(int maxIter, double epsilon)
 		pval[i] = new double[size];
 		pxval[i] = new double[size];
 	}
-	while (it < maxIter)
+	while (++it < maxIter)
 	{
 		//E-step
 		for (int i = 0; i < size; ++i)
