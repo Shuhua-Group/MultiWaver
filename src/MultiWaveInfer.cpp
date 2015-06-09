@@ -43,7 +43,7 @@ double cv_chisq(int df, double alpha)
 	return boost::math::quantile(dist, 1 - alpha);
 }
 
-ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp, double criticalValue, double epsilon)
+ParamExp findOptPar(const vector<double> &observ, int maxIter, double ancestryProp, double criticalValue, double epsilon, double minP)
 {
 	bool findOpt = false;
 	int k = 1;
@@ -69,15 +69,32 @@ ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ances
 		}
 		else
 		{
-			llkPrev = llkCur;
-			parPrev = em.getPar();
-		}
-		for (int i = 0; i < parPrev.getK(); ++i)
-		{
-			if (parPrev.getProp(i) * ancestryProp < kMinP)
+			/*
+			 * check survival proportion for each wave,
+			 * if any one less than minP, stop to increase to larger K
+			 */
+			ParamExp tmpPar = em.getPar();
+			tmpPar.sortByLambda();
+			double tempSum = 0;
+			double temp[k];
+			for (int i = 0; i < k; ++i)
 			{
-				findOpt = true;
-				break;
+				temp[i] = tmpPar.getProp(i) / tmpPar.getLambda(i);
+				tempSum += temp[i] / temp[0];
+			}
+			tempSum = ancestryProp / tempSum;
+			for (int i = 0; i < k; ++i)
+			{
+				if (tempSum * temp[i] / temp[0] < minP)
+				{
+					findOpt = true;
+					break;
+				}
+			}
+			if (!findOpt)
+			{
+				llkPrev = llkCur;
+				parPrev = em.getPar();
 			}
 		}
 	}
@@ -93,10 +110,11 @@ void help()
 	cout << "General usage: " << kProgramName << " <arguments>" << endl;
 	cout << "Arguments" << endl;
 	cout << "\t-i/--input\t<string>\tInput of the ancestral tracks [required]" << endl;
-	cout << "\t-a/--alpha\t[double]\tSignificance level to reject null hypothesis in LRT [optional, default 0.05]" << endl;
-	cout << "\t-e/--epsilon\t[double]\tEpsilon to check whether a parameter converge or not [optional, default 0.000001] " << endl;
 	cout << "\t-l/--lower\t[double]\tLower bound to discard short tracks [optional, default 0]" << endl;
-	cout << "\t-m/--maxIt\t[integer]\tMax number of iterations to perform EM [optional, default 10000]" << endl;
+	cout << "\t-a/--alpha\t[double]\tSignificance level to reject null hypothesis in LRT [optional, default 0.05]" << endl;
+	cout << "\t-e/--epsilon\t[double]\tEpsilon to check whether a parameter converge or not [optional, default 1.0e-6] " << endl;
+	cout << "\t-p/--minProp\t[double]\tMinimum survival proportion for a wave at the final generation [optional, default 0.01]" << endl;
+	cout << "\t-m/--maxIter\t[integer]\tMaximum number of iterations to perform EM [optional, default 10000]" << endl;
 	cout << "Option" << endl;
 	cout << "\t-h/--help\tPrint help message." << endl;
 }
@@ -112,6 +130,7 @@ int main(int argc, char **argv)
 	double lower = 0;
 	double alpha = 0.05;
 	double epsilon = 0.000001;
+	double minP = 0.01;
 	int maxIter = 10000;
 	for (int i = 1; i < argc; ++i)
 	{
@@ -129,7 +148,7 @@ int main(int argc, char **argv)
 		{
 			lower = atof(argv[++i]);
 		}
-		else if (arg == "-m" || arg == "--maxIt")
+		else if (arg == "-m" || arg == "--maxIter")
 		{
 			maxIter = atoi(argv[++i]);
 		}
@@ -140,6 +159,14 @@ int main(int argc, char **argv)
 		else if (arg == "-e" || arg == "--epsilon")
 		{
 			epsilon = atof(argv[++i]);
+		}
+		else if (arg == "-p" || arg == "--minProp")
+		{
+			minP = atof(argv[++i]);
+		}
+		else
+		{
+			cerr << "Un-recognizable argument, please check again!" << endl;
 		}
 	}
 	if (filename.size() == 0)
@@ -207,7 +234,7 @@ int main(int argc, char **argv)
 		string label = labels.at(i);
 		cout << "Perform EM scan for waves of population " << label << "..." << endl;
 		mixtureProps[label] = sumLengths.at(label) / totalLength;
-		optPars[label] = findOptPar(segs.at(label), maxIter, mixtureProps.at(label), criticalValue, epsilon);
+		optPars[label] = findOptPar(segs.at(label), maxIter, mixtureProps.at(label), criticalValue, epsilon, minP);
 	}
 	cout << "Finished scanning for admixture waves." << endl << endl;
 //	for (int i = 0; i < numLabel; ++i)
@@ -222,7 +249,7 @@ int main(int argc, char **argv)
 	vector<int> popOrder;
 	/*
 	 * calculate survivalProportion m_Ik(j) of each wave
-	*/
+	 */
 	map<int, vector<double> > survivalProps; //m_Ik(j)
 	for (int i = 0; i < numLabel; ++i)
 	{

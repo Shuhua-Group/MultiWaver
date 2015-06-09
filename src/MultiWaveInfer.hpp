@@ -12,7 +12,7 @@
 #include <string>
 #include "ParamExp.hpp"
 
-const double kMinP = 0.05; //minimum proportion for a wave
+//const double kMinP = 0.05; //minimum proportion for a wave
 //const double kCriticalValue = 5.991; //chi-squared value for p-value 0.05 with degree of freedom 2
 const std::string kVersion = "1.0.1";
 const std::string kProgramName = "MultiWaveInfer";
@@ -32,7 +32,7 @@ double cv_chisq(int df, double alpha = 0.05);
  * perform EM to find the best number of exponential distribution and estimate
  * corresponding parameters
  */
-ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double ancestryProp, double criticalValue = 5.991, double epsilon = 0.000001);
+ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double aProp, double cValue = 5.991, double epsilon = 0.000001, double minP = 0.01);
 
 /*
  * print help information
