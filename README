@@ -82,7 +82,8 @@ bash$ ./MultiWaveInfer --input ../example/sim1.seg > sim1_opt.log
 
 2.2 A full arguments example
 
-bash$ ./MultiWaveInfer -i ../example/sim1.seg -l 0.01 -a 0.01 -e 0.0001 -m 5000 > sim1_fopt.log
+bash$ ./MultiWaveInfer -i ../example/sim1.seg -l 0.01 -a 0.01 -e 0.0001 \
+-m 5000 > sim1_fopt.log
 
 Example explanation:
 Again, MultiWaveInfer read ancestral tracks from file sim1.seg, discard
@@ -123,8 +124,13 @@ to discard short tracks. The default is 0, which does not discard any
 short tracks. However, due to method limitation in local ancestry 
 inference, very short tracks are generally not reliable.
 
--m/--maxIt [integer]	
-	Max number of iterations to perform EM [optional, default 10000]
+-p/--minProp [double]
+	This argument is optional, in which user specify the minimum survival 
+proportion for a wave at the final generation. Default is 0.01.
+
+-m/--maxIt [integer]	 
+	This argument is also optional, in which user specify the maximum 
+number of iterations to perform EM. Default is 10000. 
 
 6. License
 GNU GENERAL PUBLIC LICENSE Version 3 
