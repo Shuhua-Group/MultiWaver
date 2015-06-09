@@ -93,10 +93,10 @@ void help()
 	cout << "General usage: " << kProgramName << " <arguments>" << endl;
 	cout << "Arguments" << endl;
 	cout << "\t-i/--input\t<string>\tInput of the ancestral tracks [required]" << endl;
-	cout << "\t-l/--lower\t[double]\tLower bound to discard short tracks [optional, default 0]" << endl;
-	cout << "\t-m/--maxIt\t[integer]\tMax number of iterations to perform EM [optional, default 10000]" << endl;
 	cout << "\t-a/--alpha\t[double]\tSignificance level to reject null hypothesis in LRT [optional, default 0.05]" << endl;
 	cout << "\t-e/--epsilon\t[double]\tEpsilon to check whether a parameter converge or not [optional, default 0.000001] " << endl;
+	cout << "\t-l/--lower\t[double]\tLower bound to discard short tracks [optional, default 0]" << endl;
+	cout << "\t-m/--maxIt\t[integer]\tMax number of iterations to perform EM [optional, default 10000]" << endl;
 	cout << "Option" << endl;
 	cout << "\t-h/--help\tPrint help message." << endl;
 }

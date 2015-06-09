@@ -8,8 +8,12 @@ the waves for each ancestral population. Secondly, use the theoretical
 length distribution of ancestral tracks to estimate the parameters.    
 
 1.Compile
+1.1 Library dependency
+MultiWaveInfer depend on boost library, make sure the boost is installed.
+Installation of boost can be found at 
+http://www.boost.org/doc/libs/1_58_0/more/getting_started/unix-variants.html
 
-1.1 Compile from source code
+1.2 Compile from source code
 It's very easy to compile from the source code by the following commands:
 
 bash$ tar -zvxf MultiWaveInfer.tar.gz
@@ -41,7 +45,7 @@ Perform EM scan for waves of population 2...
 Perform EM scan for waves of population 1...
 Finished scanning for admixture waves.
 
-There is(are) 2 waves of admixture event(s) detected
+There is(are) 2 wave(s) of admixture event(s) detected
 -----------------------------------------------------------------------------
                              Results summary
 
@@ -51,37 +55,26 @@ There is(are) 2 waves of admixture event(s) detected
 
 
 Possible scenario: #1
-   24.4077: (1,   0.198398) -----------|----------- (0,   0.801602) :   24.4713
-                                       |
-                                       |
-                                       |
-   11.0706: (1,   0.384016) -----------|
-                                       |
-                                       |
-                                       |
-
-
-Possible scenario: #2
-   24.3492: (0,   0.801602) -----------|----------- (1,   0.198398) :   24.2672
-                                       |
-                                       |
-                                       |
-   11.0706: (1,   0.384016) -----------|
-                                       |
-                                       |
-                                       |
+   24.3077: (1,   0.198398) =========>||<========= (0,   0.801602) :   24.4713
+                                      ||
+                                      ||
+                                      ||
+   11.0706: (1,   0.384016) =========>||
+                                      ||
+                                      ||
+                                      ||
 
 Hint: 
 0: population-2; 1: population-1; 
 -----------------------------------------------------------------------------
 
 We use a tree to present the results. The simulated admixed population has 
-two ancestral populations (population 1 and 2). There are 2 waves of admixture 
-events. The first admixture event was happened in 24.4715 generations ago. The 
+two reference populations (population 1 and 2). There are 2 waves of admixture 
+events. The first admixture event was happened in 24 generations ago. The 
 ancestral populations are pop2 and pop1 and corresponding mixture proportions 
-are 0.198394 and 0.801606. The second admixture event was happend in 11.0706 
+are 0.198398 and 0.801602. The second admixture event was happened in 11 
 generations ago. The ancestral population and corresponding mixture proportions
-is pop1 and 0.384019.
+is pop1 and 0.384016.
  
 User can redirect the output to a file, such as:
 
@@ -89,12 +82,13 @@ bash$ ./MultiWaveInfer --input ../example/sim1.seg > sim1_opt.log
 
 2.2 A full arguments example
 
-bash$ ./MultiWaveInfer -i ../example/sim1.seg -l 0.01 -m 5000 > sim1_fopt.log
+bash$ ./MultiWaveInfer -i ../example/sim1.seg -l 0.01 -a 0.01 -e 0.0001 -m 5000 > sim1_fopt.log
 
 Example explanation:
 Again, MultiWaveInfer read ancestral tracks from file sim1.seg, discard
-the tracks shorter than 0.01 Morgan, the Max number of iterations to perform 
-EM is 5000. Finally, the outputs will be redirected to sim1_fopt.log.
+the tracks shorter than 0.01 Morgan, the significance level of LRT is 0.01,
+and the convergent condition is 0.0001, and the Max number of iterations 
+to perform EM is 5000. Finally, the outputs will be redirected to sim1_fopt.log.
 
 3. File format
 3.1 Input file format
@@ -111,17 +105,25 @@ For example:
 0.40759031      0.41517938      Yoruba
 
 4. Arguments
--i/--input	<string>
+-i/--input <string>
 	This argument is required, in which user specify the filename of 
 input ancestral tracks, format described above.
 
--l/--lower	[double]
+-a/--alpha [double]
+	This argument is optional, in which user specify the significance
+level to reject null hypothesis in LRT. Default is 0.05.
+
+-e/--epsilon [double]
+	This argument is optional, in which user specify epsilon to check 
+whether a parameter converge or not. Default is 0.000001.
+
+-l/--lower [double]
 	This argument is optional, in which user specify the lower bound
 to discard short tracks. The default is 0, which does not discard any
 short tracks. However, due to method limitation in local ancestry 
 inference, very short tracks are generally not reliable.
 
--m/--maxIt	[integer]	
+-m/--maxIt [integer]	
 	Max number of iterations to perform EM [optional, default 10000]
 
 6. License
