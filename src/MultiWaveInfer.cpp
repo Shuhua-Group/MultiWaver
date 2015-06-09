@@ -27,8 +27,12 @@ vector<vector<T> > perm(vector<T> &seq)
 	sort(seq.begin(), seq.end());
 	do
 	{
-		if (seq.at(size - 1) != seq.at(size - 2))
-			result.push_back(seq);
+		if (seq.at(size - 1) == seq.at(size - 2))
+			continue;
+		int rsize = result.size();
+		if (rsize > 0 && result.at(rsize - 1).at(size - 2) == seq.at(size - 1))
+			continue;
+		result.push_back(seq);
 	} while (next_permutation(seq.begin(), seq.end()));
 	return result;
 }
@@ -188,7 +192,7 @@ int main(int argc, char **argv)
 		//greater than or equal to cutoff
 		if (len > lower)
 		{
-			segs.at(label).push_back(len);
+			segs.at(label).push_back(len - lower);
 		}
 	}
 	fin.close();
@@ -240,6 +244,7 @@ int main(int argc, char **argv)
 		survivalProps[i] = tempMIK;
 	}
 
+	bool hasSolution = false;
 	cout << "There is(are) " << totalNumOfWaves - 1 << " wave(s) of admixture event(s) detected" << endl;
 	cout << "-----------------------------------------------------------------------------" << endl;
 	cout << setw(44) << "Results summary" << endl << endl;
@@ -374,6 +379,10 @@ int main(int argc, char **argv)
 		}
 		if (isReasonable)
 		{
+			if (!hasSolution)
+			{
+				hasSolution = true;
+			}
 			cout << endl;
 			cout << "Possible scenario: #" << ++scenarioCount << endl;
 			cout << setw(10) << admixTime[totalNumOfWaves - 1]; //time
@@ -396,12 +405,19 @@ int main(int argc, char **argv)
 			cout << setw(40) << "||" << endl << setw(40) << "||" << endl << setw(40) << "||" << endl << endl;
 		}
 	}
-	cout << "Hint: " << endl;
-	for (int i = 0; i < numLabel; ++i)
+	if (!hasSolution)
 	{
-		cout << i << ": population-" << labels.at(i) << "; ";
+		cout << "No possible scenario for current settings, please change settings and retry!" << endl;
 	}
-	cout << endl;
+	else
+	{
+		cout << "Hint: " << endl;
+		for (int i = 0; i < numLabel; ++i)
+		{
+			cout << i << ": population-" << labels.at(i) << "; ";
+		}
+		cout << endl;
+	}
 	cout << "-----------------------------------------------------------------------------" << endl;
 
 	return 0;
