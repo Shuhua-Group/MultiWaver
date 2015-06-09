@@ -220,7 +220,9 @@ int main(int argc, char **argv)
 
 	int totalNumOfWaves = 0;
 	vector<int> popOrder;
-	/* calculate survivalProportion m_Ik(j) of each wave */
+	/*
+	 * calculate survivalProportion m_Ik(j) of each wave
+	*/
 	map<int, vector<double> > survivalProps; //m_Ik(j)
 	for (int i = 0; i < numLabel; ++i)
 	{
@@ -284,6 +286,7 @@ int main(int argc, char **argv)
 			multiplier *= (1 - alphaInOrder[i - 1]);
 			alphaInOrder[i] = mInOrder[i] / multiplier;
 		}
+		//here make sure the proportions of first two populations sum to 1
 		alphaInOrder[totalNumOfWaves - 1] = 1.0 - alphaInOrder[totalNumOfWaves - 2];
 
 		/* calculate total ancestry proportion of kth ancestral population at t generation H_k(t)*/
@@ -333,7 +336,7 @@ int main(int argc, char **argv)
 			}
 		}
 
-		double admixTime[totalNumOfWaves];
+		double admixTime[totalNumOfWaves]; //here is delta T between waves, in reverse order
 		int indexes[numLabel];
 		for (int i = 0; i < numLabel; ++i)
 		{
