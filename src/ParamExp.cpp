@@ -103,7 +103,7 @@ double ParamExp::getProp(int index) const
 }
 
 //test convergence
-bool ParamExp::isConverge(const ParamExp & par, double epsilon)
+bool ParamExp::isConverge(const ParamExp &par, double epsilon)
 {
 	bool converge = true;
 	for (int i = 0; i < K; ++i)

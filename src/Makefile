@@ -1,6 +1,6 @@
 CXX = g++
 
-CXXFLAGS =	-O2 -g -Wall
+CXXFLAGS =	-O2 -Wall
 
 SRCS = ParamExp.cpp EMExp.cpp MultiWaveInfer.cpp
 OBJS = $(SRCS:.cpp=.o)
@@ -12,7 +12,7 @@ LIBS =
 TARGET = MultiWaveInfer
 
 $(TARGET):	$(OBJS)
-	$(CXX) -o $(TARGET) $(OBJS) $(LIBS) 
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS) $(LIBS) 
 
 all:	$(TARGET)
 
