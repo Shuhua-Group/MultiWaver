@@ -108,7 +108,7 @@ ParamExp findOptPar(const vector<double> &observ, int maxIter, double ancestryPr
 	return parPrev;
 }
 
-void solveTrueProp(ParamExp &par, double cutoff)
+void solveTrueProp(ParamExp &par, double lower)
 {
 	int numOfWave = par.getK();
 	double temp[numOfWave];
@@ -116,7 +116,7 @@ void solveTrueProp(ParamExp &par, double cutoff)
 	double tempSum = temp[0];
 	for (int i = 1; i < numOfWave; ++i)
 	{
-		temp[i] = par.getProp(i) * exp((par.getLambda(0) - par.getLambda(i)) * cutoff) / par.getProp(0);
+		temp[i] = par.getProp(i) * exp((par.getLambda(0) - par.getLambda(i)) * lower) / par.getProp(0);
 		tempSum += temp[i];
 	}
 	par.setProp(0, 1.0 / tempSum);
@@ -264,7 +264,7 @@ int main(int argc, char **argv)
 		cout << "Perform EM scan for waves of population " << label << "..." << endl;
 		mixtureProps[label] = sumLengths.at(label) / totalLength;
 		ParamExp par = findOptPar(segs.at(label), maxIter, mixtureProps.at(label), criticalValue, epsilon, minP, simpleMode);
-		solveTrueProp(par, cutoff);
+		solveTrueProp(par, lower);
 		optPars[label] = par;
 	}
 	cout << "Finished scanning for admixture waves." << endl << endl;
