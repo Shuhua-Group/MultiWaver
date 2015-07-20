@@ -62,7 +62,10 @@ public:
 	double getProp(int index) const;
 //	void setK(int);
 //	void setLambda(int index, double lambda);
-//	void setProp(int index, double prop);
+	/*
+	 * set the Proportion at index
+	 */
+	void setProp(int index, double prop);
 	/*
 	 * @brief check if the parameter is converged
 	 * @param par old parameter
