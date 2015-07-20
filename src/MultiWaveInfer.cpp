@@ -43,7 +43,7 @@ double cv_chisq(int df, double alpha)
 	return boost::math::quantile(dist, 1 - alpha);
 }
 
-ParamExp findOptPar(const vector<double> &observ, int maxIter, double ancestryProp, double criticalValue, double epsilon, double minP, bool simple = false)
+ParamExp findOptPar(const vector<double> &observ, int maxIter, double ancestryProp, double criticalValue, double epsilon, double minP, bool simple)
 {
 	bool findOpt = false;
 	int k = 1;
@@ -106,6 +106,24 @@ ParamExp findOptPar(const vector<double> &observ, int maxIter, double ancestryPr
 	//parPrev.print();
 	parPrev.sortByLambda();
 	return parPrev;
+}
+
+void solveTrueProp(ParamExp &par, double cutoff)
+{
+	int numOfWave = par.getK();
+	double temp[numOfWave];
+	temp[0] = 1;
+	double tempSum += temp[0];
+	for (int i = 1; i < numOfWave; ++i)
+	{
+		temp[j] = par.getProp(i) * exp((par.getLambda(0) - par.getLambda(i)) * cutoff) / par.getProp(0);
+		tempSum += temp[j];
+	}
+	par.setProp(0, 1.0 / tempSum);
+	for(int i = 1; i < numOfWave; ++i)
+	{
+		par.setProp(i, par.getProp(0) * temp[i]);
+	}
 }
 
 void help()
@@ -245,7 +263,9 @@ int main(int argc, char **argv)
 		string label = labels.at(i);
 		cout << "Perform EM scan for waves of population " << label << "..." << endl;
 		mixtureProps[label] = sumLengths.at(label) / totalLength;
-		optPars[label] = findOptPar(segs.at(label), maxIter, mixtureProps.at(label), criticalValue, epsilon, minP);
+		ParamExp par = findOptPar(segs.at(label), maxIter, mixtureProps.at(label), criticalValue, epsilon, minP, simpleMode);
+		solveTrueProp(par, cutoff);
+		optPars[label] = par;
 	}
 	cout << "Finished scanning for admixture waves." << endl << endl;
 //	for (int i = 0; i < numLabel; ++i)
