@@ -102,6 +102,11 @@ double ParamExp::getProp(int index) const
 	return prop[index];
 }
 
+void ParamExp::setProp(int index, double prop)
+{
+	this->prop[index] = prop;
+}
+
 //test convergence
 bool ParamExp::isConverge(const ParamExp &par, double epsilon)
 {
