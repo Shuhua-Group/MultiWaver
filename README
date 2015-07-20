@@ -132,6 +132,14 @@ proportion for a wave at the final generation. Default is 0.01.
 	This argument is also optional, in which user specify the maximum 
 number of iterations to perform EM. Default is 10000. 
 
+5. Options
+-h/--help
+	Print help message, default is OFF
+-s/--simple
+	Run in simple mode, default is OFF
+Here simple mode refer to the scenario in which each parental population 
+contributes only one pulse of admixture (one wave).
+
 6. License
 GNU GENERAL PUBLIC LICENSE Version 3 
 http://www.gnu.org/licenses/gpl-3.0.html
