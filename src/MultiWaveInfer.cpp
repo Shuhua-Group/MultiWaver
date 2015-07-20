@@ -43,7 +43,7 @@ double cv_chisq(int df, double alpha)
 	return boost::math::quantile(dist, 1 - alpha);
 }
 
-ParamExp findOptPar(const vector<double> &observ, int maxIter, double ancestryProp, double criticalValue, double epsilon, double minP)
+ParamExp findOptPar(const vector<double> &observ, int maxIter, double ancestryProp, double criticalValue, double epsilon, double minP, bool simple = false)
 {
 	bool findOpt = false;
 	int k = 1;
@@ -52,6 +52,11 @@ ParamExp findOptPar(const vector<double> &observ, int maxIter, double ancestryPr
 	em.iterate(maxIter, epsilon);
 	double llkPrev = em.getLik();
 	parPrev = em.getPar();
+	if (simple) 
+	{
+		parPrev.sortByLambda();
+		return parPrev;
+	}
 	while (!findOpt)
 	{
 		k++;
@@ -117,6 +122,7 @@ void help()
 	cout << "\t-m/--maxIter\t[integer]\tMaximum number of iterations to perform EM [optional, default 10000]" << endl;
 	cout << "Option" << endl;
 	cout << "\t-h/--help\tPrint help message" << endl;
+	cout << "\t-s/--simpe\tPerform inference in simple mode, default is OFF" << endl;
 }
 
 int main(int argc, char **argv)
@@ -132,6 +138,7 @@ int main(int argc, char **argv)
 	double epsilon = 0.000001;
 	double minP = 0.01;
 	int maxIter = 10000;
+	bool simpleMode = false;
 	for (int i = 1; i < argc; ++i)
 	{
 		string arg(argv[i]);
@@ -163,6 +170,10 @@ int main(int argc, char **argv)
 		else if (arg == "-p" || arg == "--minProp")
 		{
 			minP = atof(argv[++i]);
+		}
+		else if (arg == "-s" || arg == "--simple")
+		{
+			simpleMode = true;
 		}
 		else
 		{
