@@ -37,7 +37,7 @@ ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double aProp
 /*
  * solve for proportion when considering Cutoff C 
 */
-void solveTrueProp(ParamExp &par); 
+void solveTrueProp(ParamExp &par, double cutoff = 0); 
 
 /*
  * print help information
