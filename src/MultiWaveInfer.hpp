@@ -39,6 +39,7 @@ ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double aProp
 */
 void solveTrueProp(ParamExp &par); 
 
+/*
  * print help information
  */
 void help();
