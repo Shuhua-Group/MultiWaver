@@ -130,7 +130,7 @@ void help()
 {
 	cout << kProgramName << " v" << kVersion << endl;
 	cout << kProgramName << " is designed to scan for multiple waves of admixture events and estimated corresponding parameters." << endl;
-	cout << "General usage: " << kProgramName << " <arguments>" << endl;
+	cout << "General usage: " << kProgramName << " <arguments> [options]" << endl;
 	cout << "Arguments" << endl;
 	cout << "\t-i/--input\t<string>\tInput of the ancestral tracks [required]" << endl;
 	cout << "\t-l/--lower\t[double]\tLower bound to discard short tracks [optional, default 0]" << endl;
