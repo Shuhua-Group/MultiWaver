@@ -139,8 +139,8 @@ void help()
 	cout << "\t-p/--minProp\t[double]\tMinimum survival proportion for a wave at the final generation [optional, default 0.01]" << endl;
 	cout << "\t-m/--maxIter\t[integer]\tMaximum number of iterations to perform EM [optional, default 10000]" << endl;
 	cout << "Option" << endl;
-	cout << "\t-h/--help\tPrint help message" << endl;
-	cout << "\t-s/--simpe\tPerform inference in simple mode, default is OFF" << endl;
+	cout << "\t-h/--help\tPrint help message, default is OFF" << endl;
+	cout << "\t-s/--simpe\tRun in simple mode, default is OFF" << endl;
 }
 
 int main(int argc, char **argv)
