@@ -116,7 +116,7 @@ void solveTrueProp(ParamExp &par, double lower)
 	double tempSum = temp[0];
 	for (int i = 1; i < numOfWave; ++i)
 	{
-		temp[i] = par.getProp(i) * exp((par.getLambda(0) - par.getLambda(i)) * lower) / par.getProp(0);
+		temp[i] = par.getProp(i) * exp((par.getLambda(i) - par.getLambda(0)) * lower) / par.getProp(0);
 		tempSum += temp[i];
 	}
 	par.setProp(0, 1.0 / tempSum);
