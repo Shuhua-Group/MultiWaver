@@ -35,9 +35,9 @@ double cv_chisq(int df, double alpha = 0.05);
 ParamExp findOptPar(const std::vector<double> &observ, int maxIter, double aProp, double cValue = 5.991, double epsilon = 0.000001, double minP = 0.01, bool simple = false);
 
 /*
- * solve for proportion when considering Cutoff C 
+ * solve for proportion when considering lower bound 
 */
-void solveTrueProp(ParamExp &par, double cutoff = 0); 
+void solveTrueProp(ParamExp &par, double lower = 0); 
 
 /*
  * print help information
