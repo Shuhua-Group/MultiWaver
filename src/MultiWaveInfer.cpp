@@ -112,12 +112,12 @@ void solveTrueProp(ParamExp &par, double cutoff)
 {
 	int numOfWave = par.getK();
 	double temp[numOfWave];
-	temp[0] = 1;
-	double tempSum += temp[0];
+	temp[0] = 1.0;
+	double tempSum = temp[0];
 	for (int i = 1; i < numOfWave; ++i)
 	{
-		temp[j] = par.getProp(i) * exp((par.getLambda(0) - par.getLambda(i)) * cutoff) / par.getProp(0);
-		tempSum += temp[j];
+		temp[i] = par.getProp(i) * exp((par.getLambda(0) - par.getLambda(i)) * cutoff) / par.getProp(0);
+		tempSum += temp[i];
 	}
 	par.setProp(0, 1.0 / tempSum);
 	for(int i = 1; i < numOfWave; ++i)
