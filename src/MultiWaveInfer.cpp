@@ -420,8 +420,18 @@ int main(int argc, char **argv)
 			}
 		}
 
-		//check whether the results is reasonable or not
+		/* 
+         * Check whether the results is reasonable or not
+         * Assume total N waves of admixture events, let T[i] denotes the admixture time of i+1 wave
+         * t[i] denotes the time difference between i and i+1 wave
+         * then T[i] = sum_{j=0}^i (t[j]}
+         * if the order is reasonable, we must make sure T[0] <= T[1] <= ... <= T[N-2] and T[N-3] <= T[N-1]
+         * T[0] <= T[1] <= ... <= T[N-2] => t[i] >= 0 for i = 0, 1, 2, ..., N-2
+         * and T[N-3] <= T[N-1] => T[N-3] < T[N-3] + t[N-2] + t[N-1] => t[N-2] + t[N-1] >= 0
+         */
+         
 		bool isReasonable = true;
+        
 		for (int i = 0; i < totalNumOfWaves - 1; ++i)
 		{
 			if (admixTime[i] < 0)
@@ -430,14 +440,25 @@ int main(int argc, char **argv)
 				break;
 			}
 		}
+        if (admixTime[totalNumOfWaves - 2] + admixTime[totalNumOfWaves - 1] < 0)
+        {
+            isReasonable = false;
+        }
+        
 		for (int i = 1; i < totalNumOfWaves; ++i)
 		{
 			admixTime[i] += admixTime[i - 1];
 		}
-		if (abs(admixTime[totalNumOfWaves - 1] - admixTime[totalNumOfWaves - 2]) / admixTime[totalNumOfWaves - 1] > 0.05)
-		{
-			isReasonable = false;
-		}
+        /* 
+         * This part is to check whether the times of first admixture events are closer enough
+         * In theory, these two times should be the same, in order to keep at least one possible result,
+         * The filtering is toggered off now
+         */
+//		if (abs(admixTime[totalNumOfWaves - 1] - admixTime[totalNumOfWaves - 2]) / admixTime[totalNumOfWaves - 1] > 0.05)
+//		{
+//			isReasonable = false;
+//		}
+        
 		if (isReasonable)
 		{
 			if (!hasSolution)
