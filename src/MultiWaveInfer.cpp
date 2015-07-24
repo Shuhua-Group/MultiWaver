@@ -348,7 +348,7 @@ int main(int argc, char **argv)
 		alphaInOrder[totalNumOfWaves - 1] = 1.0 - alphaInOrder[totalNumOfWaves - 2];
 
 		/* calculate total ancestry proportion of kth ancestral population at t generation H_k(t)*/
-		double hInOrder[numLabel][totalNumOfWaves - 1];
+		double hInOrder[numLabel][totalNumOfWaves];
 		/*
 		 * Initial last element of H for each population.
 		 * look at the last two positions of population order: if the second last
@@ -393,6 +393,11 @@ int main(int argc, char **argv)
 				}
 			}
 		}
+        
+        for (int i = 0; i < numLabel; ++i)
+        {
+            hInOrder[i][totalNumOfWaves - 1] = hInOrder[i][totalNumOfWaves - 2];
+        }
 
 		double admixTime[totalNumOfWaves]; //here is delta T between waves, in reverse order
 		int indexes[numLabel];
@@ -419,15 +424,15 @@ int main(int argc, char **argv)
 				}
 			}
 		}
-
+        
 		/* 
          * Check whether the results is reasonable or not
          * Assume total N waves of admixture events, let T[i] denotes the admixture time of i+1 wave
-         * t[i] denotes the time difference between i and i+1 wave
+         *  t[i] denotes the time difference between i and i+1 wave
          * then T[i] = sum_{j=0}^i (t[j]}
          * if the order is reasonable, we must make sure T[0] <= T[1] <= ... <= T[N-2] and T[N-3] <= T[N-1]
          * T[0] <= T[1] <= ... <= T[N-2] => t[i] >= 0 for i = 0, 1, 2, ..., N-2
-         * and T[N-3] <= T[N-1] => T[N-3] < T[N-3] + t[N-2] + t[N-1] => t[N-2] + t[N-1] >= 0
+         * and T[N-3] <= T[N-1] => T[N-3] <= T[N-3] + t[N-2] + t[N-1] => t[N-2] + t[N-1] >= 0
          */
          
 		bool isReasonable = true;
