@@ -38,44 +38,63 @@ double sum(double *data, int size);
 class EMExp
 {
 public:
+    
 	/*
 	 * @brief constructor
 	 * @param par Parameter for EM algorithm
 	 * @param observ Observations of data used to estimate parameter of EM
 	 */
 	EMExp(const ParamExp &par, const std::vector<double> &observ);
-	/*
+	
+    /*
 	 * @brief get the log likelihood
 	 * @return the log likelihood of current data and parameter
 	 */
 	double getLik() const;
-	/*
+	
+    /*
 	 * @brief get parameter of EM
 	 * @return the reference of EM parameter
 	 */
 	ParamExp & getPar();
-	/*
+	
+    /*
 	 * @brief set a new parameter for EM
 	 * @param new parameter to be set
 	 */
 	void setPar(const ParamExp &par);
-	/*
+	
+    /*
 	 * @brief update the log likelihood, usually when parameter is updated
 	 */
 	void updateLik();
-	/*
+	
+    /*
 	 * @brief perform EM iteration
 	 * @param maxIter max number of iteration, the EM iteration terminate either
 	 * parameter is converged, or reach the max number of iteration
 	 */
 	void iterate(int maxIter, double epsilon);
-	/*
+	
+    /*
 	 * destructor
 	 */
 	virtual ~EMExp();
+
 private:
+    /*
+     * log likelihood value
+     */
 	double lik;
+    
+    /*
+     * Parameter of EM
+     */
 	ParamExp par;
+    
+    /*
+     * a vector of observations
+     */
 	std::vector<double> observ;
 };
 
