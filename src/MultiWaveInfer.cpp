@@ -16,7 +16,7 @@
 #include "EMExp.hpp"
 #include "MultiWaveInfer.hpp"
 #include <boost/math/distributions/chi_squared.hpp>
-#include "omp.h"
+//#include "omp.h"
 
 using namespace std;
 
@@ -259,7 +259,7 @@ int main(int argc, char **argv)
 	map<string, double> mixtureProps; //S_k
 	map<string, ParamExp> optPars;
 	double criticalValue = cv_chisq(2, alpha);
-	#pragma omp parallel for
+	//#pragma omp parallel for
 	for (int i = 0; i < numLabel; ++i)
 	{
 		string label = labels.at(i);
