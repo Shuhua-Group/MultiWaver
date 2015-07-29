@@ -16,6 +16,7 @@
 #include "EMExp.hpp"
 #include "MultiWaveInfer.hpp"
 #include <boost/math/distributions/chi_squared.hpp>
+#include "omp.h"
 
 using namespace std;
 
