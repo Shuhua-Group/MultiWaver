@@ -1,6 +1,6 @@
 CXX = g++
 
-CXXFLAGS = -O2 -Wall -fopenmp
+CXXFLAGS = -O2 -Wall
 
 SRCS = ParamExp.cpp EMExp.cpp MultiWaveInfer.cpp
 OBJS = $(SRCS:.cpp=.o)
