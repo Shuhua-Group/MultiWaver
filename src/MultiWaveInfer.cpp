@@ -474,19 +474,31 @@ int main(int argc, char **argv)
 			}
 			cout << endl;
 			cout << "Possible scenario: #" << ++scenarioCount << endl;
-			cout << setw(10) << admixTime[totalNumOfWaves - 1]; //time
-			cout << ": (" << setw(1) << iter->at(totalNumOfWaves - 1); //population
-			cout << ", " << setw(10) << alphaInOrder[totalNumOfWaves - 1]; //proportion
-			//cout << ") -----------|----------- (";
-			cout << ") =========>||<========= (";
-			cout << setw(1) << iter->at(totalNumOfWaves - 2) << ", "; //population
-			cout << setw(10) << alphaInOrder[totalNumOfWaves - 2] << ") :"; //proportion
-			cout << setw(10) << admixTime[totalNumOfWaves - 2] << endl; //time
+			if (iter->at(totalNumOfWaves - 1) % 2 == 0)
+			{
+				cout << setw(10) << admixTime[totalNumOfWaves - 1]; //time
+				cout << ": (" << setw(1) << iter->at(totalNumOfWaves - 1); //population
+				cout << ", " << setw(10) << alphaInOrder[totalNumOfWaves - 1]; //proportion
+				cout << ") =========>||<========= (";
+				cout << setw(1) << iter->at(totalNumOfWaves - 2) << ", "; //population
+				cout << setw(10) << alphaInOrder[totalNumOfWaves - 2] << ") :"; //proportion
+				cout << setw(10) << admixTime[totalNumOfWaves - 2] << endl; //time
+			}
+			else
+			{
+				cout << setw(10) << admixTime[totalNumOfWaves - 2]; //time
+				cout << ": (" << setw(1) << iter->at(totalNumOfWaves - 2); //population
+				cout << ", " << setw(10) << alphaInOrder[totalNumOfWaves - 2]; //proportion
+				cout << ") =========>||<========= (";
+				cout << setw(1) << iter->at(totalNumOfWaves - 1) << ", "; //population
+				cout << setw(10) << alphaInOrder[totalNumOfWaves - 1] << ") :"; //proportion
+				cout << setw(10) << admixTime[totalNumOfWaves - 1] << endl; //time
+			}
 			for (int i = totalNumOfWaves - 3; i >= 0; --i)
 			{
 				//cout << setw(40) << "|" << endl << setw(40) << "|" << endl << setw(40) << "|" << endl;
 				cout << setw(40) << "||" << endl << setw(40) << "||" << endl << setw(40) << "||" << endl;
-				if (iter->at(i) % 2)
+				if (iter->at(i) % 2 == 0)
 				{
 					cout << setw(10) << admixTime[i] << ": (" << setw(1) << iter->at(i);
 					cout << ", " << setw(10) << alphaInOrder[i] << ") =========>||" << endl;
