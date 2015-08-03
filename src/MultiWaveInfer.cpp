@@ -486,9 +486,16 @@ int main(int argc, char **argv)
 			{
 				//cout << setw(40) << "|" << endl << setw(40) << "|" << endl << setw(40) << "|" << endl;
 				cout << setw(40) << "||" << endl << setw(40) << "||" << endl << setw(40) << "||" << endl;
-				cout << setw(10) << admixTime[i] << ": (" << setw(1) << iter->at(i);
-				//cout << ", " << setw(10) << alphaInOrder[i] << ") -----------|" << endl;
-				cout << ", " << setw(10) << alphaInOrder[i] << ") =========>||" << endl;
+				if (iter->at(i) % 2)
+				{
+					cout << setw(10) << admixTime[i] << ": (" << setw(1) << iter->at(i);
+					cout << ", " << setw(10) << alphaInOrder[i] << ") =========>||" << endl;
+				}
+				else 
+				{
+					cout << setw(40) << "||" << "<========= ("<< setw(1) << iter->at(i) << ", "; 
+					cout << setw(10) << alphaInOrder[i] << ") :" << setw(10) << admixTime[totalNumOfWaves - 2] << endl;
+				}
 			}
 			//cout << setw(40) << "|" << endl << setw(40) << "|" << endl << setw(40) << "|" << endl << endl;
 			cout << setw(40) << "||" << endl << setw(40) << "||" << endl << setw(40) << "||" << endl << endl;
