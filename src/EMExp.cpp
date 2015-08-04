@@ -126,7 +126,10 @@ void EMExp::iterate(int maxIter, double epsilon)
 		//cout << "Iteration " << ++it << " --> llk: " << getLik() << "; ";
 		//getPar().print();
 	}
-
+	if (it >= maxIter)
+	{
+		cerr << "Warning: Max interation reached before convergence"
+	}
 	//clean stuff
 	delete[] nlambda;
 	delete[] nprop;
