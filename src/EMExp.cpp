@@ -6,6 +6,7 @@
  */
 
 #include <cmath>
+#include <iostream>
 #include "EMExp.hpp"
 
 double sum(double * data, int size)
