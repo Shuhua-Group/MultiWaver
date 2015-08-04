@@ -506,7 +506,7 @@ int main(int argc, char **argv)
 				else 
 				{
 					cout << setw(40) << "||" << "<========= ("<< setw(1) << iter->at(i) << ", "; 
-					cout << setw(10) << alphaInOrder[i] << ") :" << setw(10) << admixTime[totalNumOfWaves - 2] << endl;
+					cout << setw(10) << alphaInOrder[i] << ") :" << setw(10) << admixTime[i] << endl;
 				}
 			}
 			//cout << setw(40) << "|" << endl << setw(40) << "|" << endl << setw(40) << "|" << endl << endl;
