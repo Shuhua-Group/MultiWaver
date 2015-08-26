@@ -2,7 +2,7 @@ CXX = g++
 
 CXXFLAGS = -O2 -Wall
 
-SRCS = ParamExp.cpp EMExp.cpp MultiWaveInfer.cpp
+SRCS = ParamExp.cpp EMExp.cpp Utils.cpp MultiWaveInfer.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 INCLUDES = 
