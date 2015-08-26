@@ -129,7 +129,7 @@ void EMExp::iterate(int maxIter, double epsilon)
 	}
 	if (it >= maxIter)
 	{
-		cerr << "Warning: Max interation reached before convergence, set a larger number" << endl; 
+		cerr << "Warning: Max iteration reached before convergence, set a larger number" << endl;
 	}
 	//clean stuff
 	delete[] nlambda;
