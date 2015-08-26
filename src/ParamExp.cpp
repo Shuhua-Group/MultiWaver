@@ -23,19 +23,21 @@ ParamExp::ParamExp(int K) :
 		K(K)
 {
 	lambda = new double[K];
+	prop = new double[K];
 	for (int i = 0; i < K; ++i)
 	{
 		lambda[i] = 1.0 * rand() / RAND_MAX;
+		prop[i] = 1.0 / K;
 	}
-	prop = new double[K];
-	double tmp = 0;
-	for (int i = 0; i < (K - 1); ++i)
-	{
-		prop[i] = rand() / (1.0 * K * RAND_MAX);
-		tmp += prop[i];
-	}
-	//ensure sum to one
-	prop[K - 1] = 1 - tmp;
+
+//	double tmp = 0;
+//	for (int i = 0; i < (K - 1); ++i)
+//	{
+//		prop[i] = rand() / (1.0 * K * RAND_MAX);
+//		tmp += prop[i];
+//	}
+//	//ensure sum to one
+//	prop[K - 1] = 1 - tmp;
 }
 
 /* another constructor
