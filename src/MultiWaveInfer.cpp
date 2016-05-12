@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 	for (int i = 0; i < numLabel; ++i)
 	{
 		string label = labels.at(i);
-		cout << "Perform EM scan for waves of population " << label << "..." << endl;
+		cout << "Perform scanning for waves of population " << label << "..." << endl;
 		mixtureProps[label] = sumLengths.at(label) / totalLength;
 		ParamExp par = findOptPar(segs.at(label), maxIter, mixtureProps.at(label), criticalValue, epsilon, minP, simpleMode);
 		solveTrueProp(par, lower);
@@ -346,25 +346,31 @@ int main(int argc, char **argv)
 			}
 			cout << endl;
 			cout << "Possible scenario: #" << ++scenarioCount << endl;
+			//average first two as the time of initial admixture
+			double meanTime = (admixTime[totalNumOfWaves - 1] + admixTime[totalNumOfWaves - 2]) / 2.0;
 			if (iter->at(totalNumOfWaves - 1) % 2 == 0)
 			{
-				cout << setw(10) << admixTime[totalNumOfWaves - 1]; //time
+				//cout << setw(10) << admixTime[totalNumOfWaves - 1]; //time
+				cout << setw(10) << meanTime;
 				cout << ": (" << setw(1) << iter->at(totalNumOfWaves - 1); //population
 				cout << ", " << setw(10) << alphaInOrder[totalNumOfWaves - 1]; //proportion
 				cout << ") =========>||<========= (";
 				cout << setw(1) << iter->at(totalNumOfWaves - 2) << ", "; //population
 				cout << setw(10) << alphaInOrder[totalNumOfWaves - 2] << ") :"; //proportion
-				cout << setw(10) << admixTime[totalNumOfWaves - 2] << endl; //time
+				//cout << setw(10) << admixTime[totalNumOfWaves - 2] << endl; //time
+				cout << setw(10) << meanTime << endl;
 			}
 			else
 			{
-				cout << setw(10) << admixTime[totalNumOfWaves - 2]; //time
+				//cout << setw(10) << admixTime[totalNumOfWaves - 2]; //time
+				cout << setw(10) << meanTime;
 				cout << ": (" << setw(1) << iter->at(totalNumOfWaves - 2); //population
 				cout << ", " << setw(10) << alphaInOrder[totalNumOfWaves - 2]; //proportion
 				cout << ") =========>||<========= (";
 				cout << setw(1) << iter->at(totalNumOfWaves - 1) << ", "; //population
 				cout << setw(10) << alphaInOrder[totalNumOfWaves - 1] << ") :"; //proportion
-				cout << setw(10) << admixTime[totalNumOfWaves - 1] << endl; //time
+				//cout << setw(10) << admixTime[totalNumOfWaves - 1] << endl; //time
+				cout << setw(10) << meanTime << endl;
 			}
 			for (int i = totalNumOfWaves - 3; i >= 0; --i)
 			{
