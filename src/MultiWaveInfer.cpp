@@ -71,6 +71,7 @@ int main(int argc, char **argv)
 		else
 		{
 			cerr << "unrecognizable argument found, please check again!" << endl;
+			exit(1);
 		}
 	}
 	if (filename.size() == 0)
@@ -125,7 +126,9 @@ int main(int argc, char **argv)
 		}
 	}
 	fin.close();
-
+	
+    //TODO validate the input data, to make sure the input has valid data:x
+    
 	cout << "Start scan for admixture waves... " << endl;
 	int numLabel = static_cast<int>(labels.size());
 	map<string, double> mixtureProps; //S_k
