@@ -1,16 +1,22 @@
-MultiWaveInfer v1.0.1
+MultiWaveInfer v1.0.2
 =================================================
 Short description:
-MultiWaveInfer is designed to estimate the parameters of multi-waves,
-multi-ancestral populations admixture models by the ancestral tracks. 
-The program proceed in two steps: Firstly, use EM-algorithm to identify 
-the waves for each ancestral population. Secondly, use the theoretical
-length distribution of ancestral tracks to estimate the parameters.    
+MultiWaveInfer is designed to scan the number of waves of admixture events,
+and estimate the parameters of multi-waves, multi-ancestral populations 
+admixture models via the length distribution of the ancestral tracks.
+ 
+The program works mainly in two steps: Firstly, use EM-algorithm to scan
+the number of waves for each ancestral population. Secondly, use the theoretical
+length distribution of ancestral tracks to estimate the parameters (i.e. the 
+proportions and generations).    
 
 1.Compile
 1.1 Library dependency
 MultiWaveInfer depend on boost library, make sure the boost is installed.
-Installation of boost can be found at 
+For example, boost library can be easily installed in Ubuntu/Debian Linux
+bash$ sudo apt-get install libboost-dev
+ 
+More details of installation of boost can be found at 
 http://www.boost.org/doc/libs/1_58_0/more/getting_started/unix-variants.html
 
 1.2 Compile from source code
@@ -25,8 +31,14 @@ typing the command below to get help information:
 
 bash$ ./MultiWaveInfer -h or bash$ ./MultiWaveInfer --help
 
+1.3 Installation	
+Alternatively, you can also copy the executable MultiWaveInfer to 
+/usr/local/bin directory:
+
+bash$ cp ./MultiWaveInfer /usr/local/bin/
+
 2. Test with the toy data
-2.1 two simple examples
+2.1 a simple simulated two waves admixture example
 
 bash$ ./MultiWaveInfer --input ../example/two.seg
 
@@ -37,12 +49,12 @@ proportion will print to screen. The format will explained later.
 
 The following is output of the toy data:
 
-// COMMAND ./MultiWaveInfer --input ../example/two.seg 
+// COMMAND ./MultiWaveInfer -i ../example/two.seg 
 
 Reading data from ../example/two.seg...
 Start scan for admixture waves... 
-Perform EM scan for waves of population 2...
-Perform EM scan for waves of population 1...
+Perform scanning for waves of population 2...
+Perform scanning for waves of population 1...
 Finished scanning for admixture waves.
 
 There is(are) 2 wave(s) of admixture event(s) detected
@@ -55,11 +67,11 @@ There is(are) 2 wave(s) of admixture event(s) detected
 
 
 Possible scenario: #1
-   24.3077: (1,   0.198398) =========>||<========= (0,   0.801602) :   24.4713
+   24.3692: (0,   0.801602) =========>||<========= (1,   0.198398) :   24.3692
                                       ||
                                       ||
                                       ||
-   11.0706: (1,   0.384016) =========>||
+                                      ||<========= (1,   0.384016) :   11.0706
                                       ||
                                       ||
                                       ||
@@ -82,14 +94,14 @@ bash$ ./MultiWaveInfer --input ../example/sim1.seg > sim1_opt.log
 
 2.2 A full arguments example
 
-bash$ ./MultiWaveInfer -i ../example/sim1.seg -l 0.01 -a 0.01 -e 0.0001 \
--m 5000 > sim1_fopt.log
+bash$ ./MultiWaveInfer -i ../example/three.seg -l 0.01 -a 0.01 -e 0.0001 \
+-m 5000 > three_fopt.log
 
 Example explanation:
-Again, MultiWaveInfer read ancestral tracks from file sim1.seg, discard
+Again, MultiWaveInfer read ancestral tracks from file three.seg, discard
 the tracks shorter than 0.01 Morgan, the significance level of LRT is 0.01,
 and the convergent condition is 0.0001, and the Max number of iterations 
-to perform EM is 5000. Finally, the outputs will be redirected to sim1_fopt.log.
+to perform EM is 5000. Finally, the outputs will be redirected to three_fopt.log.
 
 3. File format
 3.1 Input file format
@@ -108,37 +120,42 @@ For example:
 4. Arguments
 -i/--input <string>
 	This argument is required, in which user specify the filename of 
-input ancestral tracks, format described above.
+    input ancestral tracks, format described above.
 
 -a/--alpha [double]
 	This argument is optional, in which user specify the significance
-level to reject null hypothesis in LRT. Default is 0.05.
+    level to reject null hypothesis in likelihood ratio test (LRT). 
+    Default is 0.001.
 
 -e/--epsilon [double]
 	This argument is optional, in which user specify epsilon to check 
-whether a parameter converge or not. Default is 0.000001.
+    whether a parameter converge or not. Default is 0.000001.
 
 -l/--lower [double]
 	This argument is optional, in which user specify the lower bound
-to discard short tracks. The default is 0, which does not discard any
-short tracks. However, due to method limitation in local ancestry 
-inference, very short tracks are generally not reliable.
+    to discard short tracks. The default is 0, which does not discard any
+    short tracks. However, due to method limitation in local ancestry 
+    inference, very short tracks are generally not reliable.
 
 -p/--minProp [double]
 	This argument is optional, in which user specify the minimum survival 
-proportion for a wave at the final generation. Default is 0.01.
+    proportion for a wave at the final generation. Default is 0.05.
 
 -m/--maxIt [integer]	 
 	This argument is also optional, in which user specify the maximum 
-number of iterations to perform EM. Default is 10000. 
+    number of iterations to scan for waves of admixture events. 
+    Default is 10000. 
+
+
+
 
 5. Options
 -h/--help
 	Print help message, default is OFF
 -s/--simple
 	Run in simple mode, default is OFF
-Here simple mode refer to the scenario in which each parental population 
-contributes only one pulse of admixture (one wave).
+    Here simple mode refer to the scenario in which each parental population 
+    contributes only one pulse of admixture (one wave).
 
 6. License
 GNU GENERAL PUBLIC LICENSE Version 3 

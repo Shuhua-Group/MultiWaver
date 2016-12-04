@@ -27,9 +27,9 @@ int main(int argc, char **argv)
 	}
 	string filename = "";
 	double lower = 0;
-	double alpha = 0.05;
+	double alpha = 0.001;
 	double epsilon = 0.000001;
-	double minP = 0.01;
+	double minP = 0.05;
 	int maxIter = 10000;
 	bool simpleMode = false;
 	for (int i = 1; i < argc; ++i)

@@ -109,10 +109,10 @@ void help()
 	cout << "Arguments" << endl;
 	cout << "\t-i/--input\t<string>\tInput of the ancestral tracks [required]" << endl;
 	cout << "\t-l/--lower\t[double]\tLower bound to discard short tracks [optional, default 0]" << endl;
-	cout << "\t-a/--alpha\t[double]\tSignificance level to reject null hypothesis in LRT [optional, default 0.05]" << endl;
+	cout << "\t-a/--alpha\t[double]\tSignificance level to reject null hypothesis in LRT [optional, default 0.001]" << endl;
 	cout << "\t-e/--epsilon\t[double]\tEpsilon to check whether a parameter converge or not [optional, default 1.0e-6] " << endl;
-	cout << "\t-p/--minProp\t[double]\tMinimum survival proportion for a wave at the final generation [optional, default 0.01]" << endl;
-	cout << "\t-m/--maxIter\t[integer]\tMaximum number of iterations to perform EM [optional, default 10000]" << endl;
+	cout << "\t-p/--minProp\t[double]\tMinimum survival proportion for a wave at the final generation [optional, default 0.05]" << endl;
+	cout << "\t-m/--maxIter\t[integer]\tMaximum number of iterations to scan for waves of admixture events [optional, default 10000]" << endl;
 	cout << "Options" << endl;
 	cout << "\t-h/--help\tPrint help message, default is OFF" << endl;
 	cout << "\t-s/--simple\tRun in simple mode, default is OFF" << endl;

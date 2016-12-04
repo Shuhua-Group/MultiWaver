@@ -15,7 +15,7 @@
 
 //const double kMinP = 0.05; //minimum proportion for a wave
 //const double kCriticalValue = 5.991; //chi-squared value for p-value 0.05 with degree of freedom 2
-const std::string kVersion = "1.0.1";
+const std::string kVersion = "1.0.2";
 const std::string kProgramName = "MultiWaveInfer";
 
 /*
