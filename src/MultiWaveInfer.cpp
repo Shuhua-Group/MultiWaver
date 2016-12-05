@@ -127,10 +127,25 @@ int main(int argc, char **argv)
 	}
 	fin.close();
 	
-    //TODO validate the input data, to make sure the input has valid data:x
+    //TODO validate the input data, to make sure the input has valid data
+    int numLabel = static_cast<int>(labels.size());
+    bool hasEmpty = false;
+    for (int i = 0; i < numLabel; ++i)
+    {
+        if(segs.at(labels.at(i)).size() <= 0)
+        {
+            cout << "Ancestral population " << labels.at(i) << " has no data after filtering!" << endl;
+            cout << "Please check your input or decrease the lower bound and try again!" << endl;
+            hasEmpty = true;
+            break;
+        } 
+    }
+    if (hasEmpty)
+    {
+        exit(1);
+    }
     
 	cout << "Start scan for admixture waves... " << endl;
-	int numLabel = static_cast<int>(labels.size());
 	map<string, double> mixtureProps; //S_k
 	map<string, ParamExp> optPars;
 	double criticalValue = cv_chisq(2, alpha);
