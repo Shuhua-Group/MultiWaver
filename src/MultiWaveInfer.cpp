@@ -182,7 +182,14 @@ int main(int argc, char **argv)
 	}
 
 	bool hasSolution = false;
-	cout << "There is(are) " << totalNumOfWaves - 1 << " wave(s) of admixture event(s) detected" << endl;
+	if (totalNumOfWaves > 2)
+	{
+		cout << "There are " << totalNumOfWaves - 1 << " waves of admixture events detected" << endl;
+	}
+	else
+	{
+		cout << "There is only " << totalNumOfWaves - 1 << " wave of admixture event detected" << endl;
+	}
 	cout << "-----------------------------------------------------------------------------" << endl;
 	cout << setw(44) << "Results summary" << endl << endl;
 	cout << setw(32) << "Parental population" << setw(32) << "Admixture proportion" << endl;
