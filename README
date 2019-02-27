@@ -1,7 +1,7 @@
-MultiWaveInfer v1.0.2
+MultiWaver v1.0.2
 =================================================
 Short description:
-MultiWaveInfer is designed to scan the number of waves of admixture events,
+MultiWaver is designed to scan the number of waves of admixture events,
 and estimate the parameters of multi-waves, multi-ancestral populations 
 admixture models via the length distribution of the ancestral tracks.
  
@@ -12,7 +12,7 @@ proportions and generations).
 
 1.Compile
 1.1 Library dependency
-MultiWaveInfer depend on boost library, make sure the boost is installed.
+MultiWaver depend on boost library, make sure the boost is installed.
 For example, boost library can be easily installed in Ubuntu/Debian Linux
 bash$ sudo apt-get install libboost-dev
  
@@ -22,34 +22,34 @@ http://www.boost.org/doc/libs/1_58_0/more/getting_started/unix-variants.html
 1.2 Compile from source code
 It's very easy to compile from the source code by the following commands:
 
-bash$ tar -zvxf MultiWaveInfer.tar.gz
-bash$ cd MultiWaveInfer/src
+bash$ tar -zvxf MultiWaver.tar.gz
+bash$ cd MultiWaver/src
 bash$ make
 
-After compiling, you will get the executable MultiWaveInfer, just
+After compiling, you will get the executable MultiWaver, just
 typing the command below to get help information:
 
-bash$ ./MultiWaveInfer -h or bash$ ./MultiWaveInfer --help
+bash$ ./MultiWaver -h or bash$ ./MultiWaver --help
 
 1.3 Installation	
-Alternatively, you can also copy the executable MultiWaveInfer to 
+Alternatively, you can also copy the executable MultiWaver to 
 /usr/local/bin directory:
 
-bash$ cp ./MultiWaveInfer /usr/local/bin/
+bash$ cp ./MultiWaver /usr/local/bin/
 
 2. Test with the toy data
 2.1 a simple simulated two waves admixture example
 
-bash$ ./MultiWaveInfer --input ../example/two.seg
+bash$ ./MultiWaver --input ../example/two.seg
 
 Example explanation:
-MultiWaveInfer will read the ancestral tracks from two.seg,
+MultiWaver will read the ancestral tracks from two.seg,
 after a while, the optimal model and corresponding generation and 
 proportion will print to screen. The format will explained later.
 
 The following is output of the toy data:
 
-// COMMAND ./MultiWaveInfer -i ../example/two.seg 
+// COMMAND ./MultiWaver -i ../example/two.seg 
 
 Reading data from ../example/two.seg...
 Start scan for admixture waves... 
@@ -90,22 +90,22 @@ is pop1 and 0.384016.
  
 User can redirect the output to a file, such as:
 
-bash$ ./MultiWaveInfer --input ../example/sim1.seg > sim1_opt.log
+bash$ ./MultiWaver --input ../example/sim1.seg > sim1_opt.log
 
 2.2 A full arguments example
 
-bash$ ./MultiWaveInfer -i ../example/three.seg -l 0.01 -a 0.01 -e 0.0001 \
+bash$ ./MultiWaver -i ../example/three.seg -l 0.01 -a 0.01 -e 0.0001 \
 -m 5000 > three_fopt.log
 
 Example explanation:
-Again, MultiWaveInfer read ancestral tracks from file three.seg, discard
+Again, MultiWaver read ancestral tracks from file three.seg, discard
 the tracks shorter than 0.01 Morgan, the significance level of LRT is 0.01,
 and the convergent condition is 0.0001, and the Max number of iterations 
 to perform EM is 5000. Finally, the outputs will be redirected to three_fopt.log.
 
 3. File format
 3.1 Input file format
-MultiWaveInfer is easy to use, only need one file, in which each line 
+MultiWaver is easy to use, only need one file, in which each line 
 represents a ancestral track with the start point, end points, from 
 which ancestry the track originates. The start and end points units 
 are in Morgan.
