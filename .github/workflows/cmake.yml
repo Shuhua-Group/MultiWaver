@@ -5,7 +5,6 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  ROOT_PATH: ..
 
 jobs:
   build:
@@ -22,10 +21,6 @@ jobs:
       # Some projects don't allow in-source building, so create a separate build directory
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{runner.workspace}}/build
-    - name: check env
-      shell: bash
-      run: echo $ROOT_PATH $GITHUB_WORKSPACE
-
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
